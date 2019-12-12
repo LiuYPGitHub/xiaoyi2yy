@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>首页</title>
+    <link rel="shortcut icon" href="favicon.ico">
+    <link href="../static/css/bootstrap.min.css" th:href="@{/css/bootstrap.min.css}" rel="stylesheet"/>
+    <link href="../static/css/font-awesome.min.css" th:href="@{/css/font-awesome.min.css}" rel="stylesheet"/>
+    <link href="../static/css/main/animate.min.css" th:href="@{/css/main/animate.min.css}" rel="stylesheet"/>
+    <link href="../static/css/main/style.min862f.css" th:href="@{/css/main/style.min862f.css}" rel="stylesheet"/>
+    <th:block th:include="include :: echarts-js" />
+</head>
+
+<body class="gray-bg">
+<div class="wrapper wrapper-content">
+    <div class="row">
+
+        <input id="url" type="hidden" th:value="${url}">
+
+        <div class="col-sm-4">
+            <div class="panel panel-default">
+                <div class="panel-body" style="text-align:center;">
+                    <h3>待审核课程 <text style="color:red; font-size: 18px;" th:text="${court}"></text></h3>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-sm-4">
+            <div class="panel panel-default" style="text-align:center;">
+                <div class="panel-body">
+                    <h3>已上线课程 <text style="color:red; font-size: 18px;" th:text="${online}"></text></h3>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-sm-4">
+            <div class="panel panel-default" style="text-align:center;">
+                <div class="panel-body">
+                    <h3>未通过课程 <text style="color:RED; font-size: 18px;" th:text="${notThrough}"></text></h3>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-sm-4">
+            <div class="panel panel-default">
+                <div class="panel-heading"><h3>销售总金额</h3></div>
+                <div class="panel-body">
+                    <text style="color:red; font-size: 25px" th:text="${sales}"></text>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-sm-4">
+            <div class="panel panel-default">
+                <div class="panel-heading"><h3>自有渠道销售总金额</h3></div>
+                <div class="panel-body">
+                    <text style="color:red; font-size: 25px" th:text="${ownChannelSales}"></text>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-sm-4">
+            <div class="panel panel-default">
+                <div class="panel-heading"><h3>添翼申学销售总金额</h3></div>
+                <div class="panel-body">
+                    <text style="color:red; font-size: 25px" th:text="${wings}"></text>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-sm-4">
+            <div class="panel panel-default">
+                <div class="panel-heading"><h3>已付费学生总数</h3></div>
+                <div class="panel-body">
+                    <text style="color:red; font-size: 25px" th:text="${students}"></text>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-sm-4">
+            <div class="panel panel-default">
+                <div class="panel-heading"><h3>自有渠道付费学生总数</h3></div>
+                <div class="panel-body">
+                    <text style="color:red; font-size: 25px" th:text="${ownChannel}"></text>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-sm-4">
+            <div class="panel panel-default">
+                <div class="panel-heading"><h3>添翼申学付费学生总数</h3></div>
+                <div class="panel-body">
+                    <text style="color:red; font-size: 25px" th:text="${wingsOwn}"></text>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--  热销课程TOP5 -->
+    <div id="main" style="width: 80%;height:400px"></div>
+
+    <!--  机构近14日数据 padding-left: 180px; -->
+    <div th:if="${biaoji} != null">
+        <select name="" id="kuang" onchange="kuang()">
+            <option th:each="map : ${selectSiteName}" th:text="${map}"></option>
+        </select>
+    </div>
+
+    <div th:if="${biaoji} == null">
+        <div id="1" style="display: inline-block; position: relative;left: 160px;top: 26px;z-index: 99">
+            <select name="" id="kuang" onchange="kuang()">
+                <option value=''>所有机构</option>
+                <option th:each="map : ${selectSiteName}" th:text="${map}"></option>
+            </select>
+        </div>
+    </div>
+    <div id="main14" style="width: 80%;height:600px; "></div>
+    <!--  近6月销售数据  -->
+    <div id="main6m" style="width: 80%;height:600px;"></div>
+
+</div>
+    <script th:src="@{/js/jquery.min.js}"></script>
+    <script th:src="@{/js/bootstrap.min.js}"></script>
+    <script th:src="@{/ajax/libs/flot/jquery.flot.js}"></script>
+    <script th:src="@{/ajax/libs/report/echarts/echarts-all.js}"></script>
+    <th:block th:include="include :: echarts-js"/>
+    <script th:inline="javascript">
+        $.ajax({
+            url: "../report/TOP5",
+            dataType: "JSON",
+            success: function (data) {
+                echarts.init(document.getElementById('main')).setOption({
+                    title: {
+                        text: '热销课程TOP5'
+                    },
+                    tooltip: {
+                        trigger: 'axis',
+                        axisPointer: {
+                            type: 'shadow'
+                        }
+                    },
+                    grid: {
+                        left: '2000px',
+                        right: '0%',
+                        bottom: '50%',
+                        containLabel: true
+                    },
+                    xAxis: {
+                        type: 'value',
+                        boundaryGap: [0, 0.01]
+                    },
+                    yAxis: {
+                        left: '50px',
+                        type: 'category',
+                        data: data.data.courseNames
+                    },
+                    series: [
+                        {
+                            type: 'bar',
+                            data: data.data.courseDatas
+                        }
+                    ]
+                });
+            },
+        });
+
+        function kuang() {
+            var org_name = $("#kuang").find("option:selected").text();
+            $.ajax({
+                url: "../report/class14?siteName=" + org_name,
+                dataType: "JSON",
+                success: function (data) {
+                    // alert(data);
+                    echarts.init(document.getElementById('main14')).setOption({
+                        title: {
+                            text: '机构近14日数据'
+                        },
+                        tooltip: {
+                            trigger: 'axis',
+                            axisPointer: {
+                                type: 'cross',
+                                label: {
+                                    backgroundColor: '#253b56'
+                                }
+                            }
+                        },
+                        legend: {
+                            data: ['付费学生', '销售金额']
+                        },
+                        toolbox: {
+                            show: true,
+                            feature: {
+                                dataView: {readOnly: false},
+                                restore: {},
+                                saveAsImage: {}
+                            }
+                        },
+                        dataZoom: {
+                            show: false,
+                            start: 0,
+                            end: 100
+                        },
+                        xAxis: [
+                            {
+                                type: 'category',
+                                boundaryGap: true,
+                                data: (function () {
+                                    var res = data.data.dateFormat;
+                                    return res;
+                                })()
+                            },
+                            {
+                                type: 'category',
+                                boundaryGap: true,
+                                data: (function () {
+                                    var res = [];
+                                    var len = 14;
+                                    while (len--) {
+                                        res.push(15 - len - 1);
+                                    }
+                                    return res;
+                                })()
+                            }
+                        ],
+                        yAxis: [
+                            {
+                                type: 'value',
+                                name: '付费学生',
+                                min: 0,
+                                boundaryGap: [0.2, 0.2]
+                            }, {
+                                type: 'value',
+                                name: '销售金额',
+                                min: 0,
+                                boundaryGap: [0.2, 0.2]
+                            },
+                        ],
+                        series: [
+                            {
+                                name: '销售金额',
+                                type: 'bar',
+                                xAxisIndex: 1,
+                                yAxisIndex: 1,
+                                data: (function () {
+                                    var res = data.data.sales14;
+                                    return res;
+                                })()
+                            },
+                            {
+                                name: '付费学生',
+                                type: 'line',
+                                data: (function () {
+                                    var ress = data.data.countSales14;
+                                    return ress;
+                                })()
+                            }
+                        ]
+                    });
+                }
+            });
+        };
+
+        $.ajax({
+            url: "../report/class14",
+            dataType: "JSON",
+            success: function (data) {
+                echarts.init(document.getElementById('main14')).setOption({
+                    title: {
+                        text: '机构近14日数据'
+                    },
+                    tooltip: {
+                        trigger: 'axis',
+                        axisPointer: {
+                            type: 'cross',
+                            label: {
+                                backgroundColor: '#253b56'
+                            }
+                        }
+                    },
+                    legend: {
+                        data: ['付费学生', '销售金额']
+                    },
+                    toolbox: {
+                        show: true,
+                        feature: {
+                            dataView: {readOnly: false},
+                            restore: {},
+                            saveAsImage: {}
+                        }
+                    },
+                    dataZoom: {
+                        show: false,
+                        start: 0,
+                        end: 100
+                    },
+                    xAxis: [
+                        {
+                            type: 'category',
+                            boundaryGap: true,
+                            data: (function () {
+                                var res = data.data.dateFormat;
+                                return res;
+                            })()
+                        },
+                        {
+                            type: 'category',
+                            boundaryGap: true,
+                            data: (function () {
+                                var res = [];
+                                var len = 14;
+                                while (len--) {
+                                    res.push(15 - len - 1);
+                                }
+                                return res;
+                            })()
+                        }
+                    ],
+                    yAxis: [
+                        {
+                            type: 'value',
+                            name: '付费学生',
+                            min: 0,
+                            boundaryGap: [0.2, 0.2]
+                        }, {
+                            type: 'value',
+                            name: '销售金额',
+                            min: 0,
+                            boundaryGap: [0.2, 0.2]
+                        },
+                    ],
+                    series: [
+                        {
+                            name: '销售金额',
+                            type: 'bar',
+                            xAxisIndex: 1,
+                            yAxisIndex: 1,
+                            data: (function () {
+                                var res = data.data.sales14;
+                                return res;
+                            })()
+                        },
+                        {
+                            name: '付费学生',
+                            type: 'line',
+                            data: (function () {
+                                var ress = data.data.countSales14;
+                                return ress;
+                            })()
+                        }
+                    ]
+                });
+            },
+        });
+
+        $.ajax({
+            url:"../report/institutions6",
+            dataType: "JSON",
+            success: function (data) {
+                echarts.init(document.getElementById('main6m')).setOption({
+                    title: {
+                        text: '机构近6月销售数据'
+                    },
+                    tooltip: {
+                        trigger: 'axis',
+                        axisPointer: {
+                            type: 'shadow'        // 默认为直线，可选为：'line' | 'shadow'
+                        }
+                    },
+                    legend: {
+                        data: ['销售总额', '自有渠道销售额', '添翼申学销售额']
+                    },
+                    grid: {
+                        left: '3%',
+                        right: '4%',
+                        bottom: '3%',
+                        containLabel: true
+                    },
+                    xAxis: [
+                        {
+                            type: 'category',
+                            data: data.data.institutions6
+                        }
+                    ],
+                    yAxis: [
+                        {
+                            type: 'value'
+                        }
+                    ],
+                    series: [
+                        {
+                            name: '销售总额',
+                            type: 'bar',
+                            data: data.data.totalSales
+                        },
+                        {
+                            name: '自有渠道销售额',
+                            type: 'bar',
+                            data: data.data.totalSalesNo
+                        },
+                        {
+                            name: '添翼申学销售额',
+                            type: 'bar',
+                            data: data.data.totalSalesYes
+                        }
+                    ]
+                });
+            }
+        });
+    </script>
+</body>
+</html>

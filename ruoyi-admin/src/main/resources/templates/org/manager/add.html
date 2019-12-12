@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <th:block th:include="include :: header('新增机构')"/>
+    <th:block th:include="include :: select2-css"/>
+</head>
+<body>
+<div class="main-content">
+    <form id="form-org-add" class="form-horizontal">
+        <h4 class="form-header h4">机构信息</h4>
+
+        <div class="row">
+            <div class="col-sm-6">
+                <div class="form-group">
+                    <label class="col-sm-4 control-label"><span style="color: red; ">*</span>机构名称：</label>
+                    <div class="col-sm-8">
+                        <input name="orgName" placeholder="请输入用户名称" class="form-control" type="text" maxlength="30"
+                               required>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-6">
+                <div class="form-group">
+                    <label class="col-sm-4 control-label"><span style="color: red; ">*</span>联系人：</label>
+                    <div class="col-sm-8">
+                        <input name="contacts" placeholder="请输入联系人" class="form-control" type="text"
+                               required>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-sm-6">
+                <div class="form-group">
+                    <label class="col-sm-4 control-label"><span style="color: red; ">*</span>机构照片：</label>
+                    <div class="col-sm-8">
+                        <input type="file" multiple name="headImgUrl" required>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-6">
+                <div class="form-group">
+                    <label class="col-sm-4 control-label"><span style="color: red; ">*</span>联系人电话：</label>
+                    <div class="col-sm-8">
+                        <input name="phone" placeholder="请输入联系人电话" type="text" class="form-control"
+                               maxlength="11" required>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-6">
+                <div class="form-group">
+                    <label class="col-sm-4 control-label"><span style="color: red; ">*</span>校区：</label>
+                    <div class="col-sm-8">
+                        <input name="campus" placeholder="请输入校区" type="text" class="form-control" maxlength="128"
+                               required>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-6">
+                <div class="form-group">
+                    <label class="col-sm-4 control-label"><span style="color: red; ">*</span>地址：</label>
+                    <div class="col-sm-8">
+                        <input name="address" placeholder="请输入地址" type="text" class="form-control"
+                               required>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-6">
+                <div class="form-group">
+                    <label class="col-sm-4 control-label">机构描述：</label>
+                    <div class="col-sm-8">
+                            <textarea name="info" class="form-control">
+                            </textarea>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </form>
+</div>
+
+<div class="row">
+    <div class="col-sm-offset-5 col-sm-10">
+        <button type="button" class="btn btn-sm btn-primary" onclick="submitHandler()"><i class="fa fa-check"></i>保 存
+        </button>&nbsp;
+        <button type="button" class="btn btn-sm btn-danger" onclick="closeItem()"><i class="fa fa-reply-all"></i>关 闭
+        </button>
+    </div>
+</div>
+<th:block th:include="include :: footer"/>
+<th:block th:include="include :: select2-js"/>
+<script>
+    var prefix = "/manager/org";
+
+    $("#form-org-add").validate({
+        onkeyup: false,
+        rules: {
+            telNum: {
+                minlength: 11,
+                maxlength: 11,
+                required: true
+            },
+            orgName: {
+                required: true
+            }
+        },
+        messages: {
+            telNum: {
+                remote: "账号已经存在",
+                required: "账号不能为空",
+                minlength: "账号不能小于11位"
+
+            },
+            orgName: {
+                required: "机构不能为空"
+            }
+        },
+        focusCleanup: true
+    });
+
+    function submitHandler() {
+        if ($.validate.form()) {
+            var data = $("#form-org-add").serializeArray();
+            $.operate.saveTab(prefix + "/addOrg", data);
+        }
+    }
+
+</script>
+</body>
+</html>

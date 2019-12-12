@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.web.controller.blog.dao.DynamicMapper">
+
+    <resultMap type="com.ruoyi.web.controller.blog.bean.DynamicBean" id="DynamicBeanResult">
+        <result property="dynamicId" column="dyna_id"/>
+        <result property="dynaContent" column="dyna_content"/>
+        <result property="realName" column="real_name"/>
+        <result property="nickName" column="nick_name"/>
+        <result property="userType" column="user_type"/>
+        <result property="releaseTime" column="release_time"/>
+        <result property="dynaImg" column="dyna_img"/>
+        <result property="createBy" column="create_by"/>
+        <result property="createTime" column="create_time"/>
+        <result property="updateTime" column="update_time"/>
+    </resultMap>
+
+    <select id="selectDynamic" parameterType="DynamicBean" resultMap="DynamicBeanResult">
+        SELECT d.dyna_id, d.dyna_content, d.update_time ,u.user_type, ui.real_name, ui.nick_name,d.create_by,d.create_time
+        FROM lz_pf_dynamic d
+             left join lz_pf_user u on u.user_id = d.user_id
+             left join lz_pf_user_info ui on u.user_id = ui.user_id
+        WHERE d.is_delete ='1'
+        <if test="dynaContent != null and dynaContent != ''">
+            AND d.dyna_content like concat('%', #{dynaContent}, '%')
+        </if>
+        <if test="realName != null and realName != ''">
+            AND ui.real_name like concat('%', #{realName}, '%')
+        </if>
+        order by d.create_time desc
+    </select>
+
+    <select id="selectDynamicDetail" parameterType="long" resultMap="DynamicBeanResult">
+         SELECT d.dyna_id, d.dyna_content, d.update_time ,u.user_type, ui.real_name, ui.nick_name,d.create_by,d.create_time
+        FROM lz_pf_dynamic d
+             left join lz_pf_user u on u.user_id = d.user_id
+             left join lz_pf_user_info ui on u.user_id = ui.user_id
+        WHERE d.is_delete ='1' AND d.dyna_id=#{dynaId}
+         order by d.create_time desc
+    </select>
+
+
+    <select id="selectDynamicImg" parameterType="long" resultType="java.util.Map">
+        SELECT di.img_url
+        FROM lz_pf_dynamic_img di
+        WHERE di.is_delete ='1' AND di.dyna_id=#{dynaId}
+    </select>
+
+</mapper>

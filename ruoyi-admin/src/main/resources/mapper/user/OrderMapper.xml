@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.web.controller.user.dao.OrderMapper">
+
+    <resultMap type="com.ruoyi.web.controller.user.domain.Order" id="OrderResult">
+        <id property="orderId" column="order_id"/>
+        <result property="orderNum" column="order_num"/>
+        <result property="orderType" column="order_type"/>
+        <result property="orderChannel" column="order_channel"/>
+        <result property="orderName" column="order_name"/>
+        <result property="siteName" column="site_name"/>
+        <result property="courseName" column="course_name"/>
+        <result property="channel" column="channel"/>
+        <result property="channelName" column="channel_name"/>
+        <result property="userName" column="user_name"/>
+        <result property="userMobile" column="user_mobile"/>
+        <result property="payOrderNum" column="pay_order_num"/>
+        <result property="cost" column="cost"/>
+        <result property="primeCost" column="prime_cost"/>
+        <result property="payType" column="pay_type"/>
+        <result property="payStatus" column="pay_status"/>
+        <result property="refundName" column="refund_name"/>
+        <result property="refundDate" column="refund_date"/>
+        <result property="refundFee" column="refund_fee"/>
+        <result property="orderFinishDate" column="order_finish_date"/>
+        <result property="orderExpireDate" column="order_expire_date"/>
+    </resultMap>
+
+    <select id="selectOrder" parameterType="com.ruoyi.web.controller.user.bean.OrderBean" resultMap="OrderResult">
+        SELECT user_name, user_mobile, course_name, site_name, order_name, order_name, channel_name, prime_cost,
+        pay_status, order_finish_date
+        FROM ty_orders
+        WHERE 1 ='1'
+
+        <if test="userMobile != null and userMobile != ''">
+            AND user_mobile like concat('%', #{userMobile}, '%')
+        </if>
+        <if test="payStatus != null and payStatus != ''">
+            AND pay_status like concat('%', #{payStatus}, '%')
+        </if>
+
+        <if test="channelName != null and channelName != ''">
+            AND channel_name like concat('%', #{channelName}, '%')
+        </if>
+        <if test="siteName != null and siteName != ''">
+            AND site_name like concat('%', #{siteName}, '%')
+        </if>
+        <if test="courseName != null and courseName != ''">
+            AND course_name like concat('%', #{courseName}, '%')
+        </if>
+
+        <if test="beginTime != null and beginTime != ''"><!-- 开始时间检索 -->
+            AND date_format(order_finish_date,'%y%m%d') &gt;= date_format(#{beginTime},'%y%m%d')
+        </if>
+        <if test="endTime != null and endTime != ''"><!-- 结束时间检索 -->
+            AND date_format(order_finish_date,'%y%m%d') &lt;= date_format(#{endTime},'%y%m%d')
+        </if>
+
+        <if test="orderBy != null and orderBy != ''">
+            ORDER BY order_finish_date ${orderBy}
+        </if>
+    </select>
+
+    <insert id="insertOrder" parameterType="Order" keyProperty="orderId">
+        insert into ty_orders(
+        <if test="orderId != null and orderId != ''">order_id,</if>
+        <if test="orderName != null and orderName != ''">order_name,</if>
+        <if test="orderNum != null and orderNum != ''">order_num,</if>
+        <if test="orderType != null and orderType != ''">order_type,</if>
+        <if test="orderChannel != null and orderChannel != ''">order_channel,</if>
+
+        <if test="siteName != null and siteName != ''">site_name,</if>
+        <if test="channel != null and channel != ''">channel,</if>
+        <if test="channelName != null and channelName != ''">channel_name,</if>
+        <if test="userName != null and userName != ''">user_name,</if>
+        <if test="userMobile != null and userMobile != ''">user_mobile,</if>
+
+        <if test="payOrderNum != null and payOrderNum != ''">pay_order_num,</if>
+        <if test="cost != null and cost != ''">cost,</if>
+        <if test="primeCost != null and primeCost != ''">prime_cost,</if>
+        <if test="payType != null and payType != ''">pay_type,</if>
+        <if test="payStatus != null and payStatus != ''">pay_status,</if>
+        <if test="refundName != null and refundName != ''">refund_name,</if>
+        <if test="refundDate != null and refundDate != ''">refund_date,</if>
+        <if test="refundFee != null and refundFee != ''">refund_fee,</if>
+        <if test="orderFinishDate != null and orderFinishDate != ''">order_finish_date,</if>
+        <if test="orderExpireDate != null and orderExpireDate != ''">order_expire_date</if>
+
+        )values(
+        <if test="orderId != null and orderId != ''">orderId,</if>
+        <if test="orderName != null and orderName != ''">orderName,</if>
+        <if test="orderNum != null and orderNum != ''">orderNum,</if>
+        <if test="orderType != null and orderType != ''">orderType,</if>
+        <if test="orderChannel != null and orderChannel != ''">orderChannel,</if>
+
+        <if test="siteName != null and siteName != ''">siteName,</if>
+        <if test="channel != null and channel != ''">channel,</if>
+        <if test="channelName != null and channelName != ''">channelName,</if>
+        <if test="userName != null and userName != ''">userName,</if>
+        <if test="userMobile != null and userMobile != ''">userMobile,</if>
+
+        <if test="payOrderNum != null and payOrderNum != ''">payOrderNum,</if>
+        <if test="cost != null and cost != ''">cost,</if>
+        <if test="primeCost != null and primeCost != ''">primeCost,</if>
+        <if test="payType != null and payType != ''">payType,</if>
+        <if test="payStatus != null and payStatus != ''">payStatus,</if>
+        <if test="refundName != null and refundName != ''">refundName,</if>
+        <if test="refundDate != null and refundDate != ''">refundDate,</if>
+        <if test="refundFee != null and refundFee != ''">refundFee,</if>
+        <if test="orderFinishDate != null and orderFinishDate != ''">orderFinishDate,</if>
+        <if test="orderExpireDate != null and orderExpireDate != ''">orderExpireDate</if>
+
+        )
+    </insert>
+
+</mapper>

@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.web.controller.xiaoyi.dao.RecordCourseDetailMapper">
+
+    <resultMap id="recordCourseDetailMap" type="com.ruoyi.web.controller.xiaoyi.domain.RecordCourseDetail">
+        <id property="id" column="id"></id>
+        <result property="courseId" column="course_id"></result>
+        <result property="lessonId" column="lesson_id"></result>
+        <result property="lessonName" column="lesson_name"></result>
+        <result property="code" column="code"></result>
+        <result property="orgCode" column="org_code"></result>
+        <result property="vid" column="vid"></result>
+        <result property="mp4" column="mp4"></result>
+        <result property="recordHour" column="record_hour"></result>
+        <result property="lessonDate" column="lesson_date"></result>
+        <result property="createdAt" column="created_at"></result>
+        <result property="updatedAt" column="updated_at"></result>
+        <result property="allowTaste" column="allowTaste"></result>
+    </resultMap>
+
+    <select id="selectByCourseId" resultMap="recordCourseDetailMap">
+        SELECT * FROM ty_record_detail
+        WHERE course_id = #{courseId}
+    </select>
+
+</mapper>

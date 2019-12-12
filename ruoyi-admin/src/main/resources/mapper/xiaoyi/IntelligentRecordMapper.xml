@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.web.controller.xiaoyi.dao.IntelligentRecordMapper">
+
+    <resultMap id="IntelligentRecordBeansMap" type="com.ruoyi.web.controller.xiaoyi.bean.IntelligentRecordBean">
+        <id property="id" column="id"></id>
+        <result property="channelId" column="channelId"></result>
+        <result property="startDate" column="start_date"></result>
+        <result property="endDate" column="end_date"></result>
+        <result property="flowState" column="flow_state"></result>
+    </resultMap>
+
+    <select id="getIntelligentRecordBeans" resultMap="IntelligentRecordBeansMap">
+        SELECT id,start_date,end_date,channelId,flow_state FROM `ty_poly_record_course`
+        WHERE start_date IS NOT NULL
+        AND end_date IS NOT NULL
+        AND channelId IS NOT NULL
+    </select>
+
+    <update id="updateFlowState" parameterType="com.ruoyi.web.controller.xiaoyi.bean.IntelligentRecordBean">
+        update ty_poly_record_course
+        <trim prefix="set" suffixOverrides=",">
+            <if test="flowState != null and flowState != ''">
+                flow_state = #{flowState},
+            </if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <resultMap id="intelligentRecordsMap" type="com.ruoyi.web.controller.xiaoyi.domain.IntelligentRecord">
+        <id property="id" column="id"></id>
+        <result property="createdAt" column="created_at"></result>
+        <result property="orgCode" column="org_code"></result>
+        <result property="status" column="status"></result>
+        <result property="code" column="code"></result>
+        <result property="courseName" column="course_name"></result>
+        <result property="teacherName" column="teacher_name"></result>
+        <result property="desc" column="desc"></result>
+        <result property="courseNum" column="course_num"></result>
+        <result property="courseMins" column="course_mins"></result>
+        <result property="classInfo" column="class"></result>
+        <result property="isDel" column="is_del"></result>
+        <result property="isShow" column="is_show"></result>
+        <result property="createDate" column="reg_date"></result>
+        <result property="startDate" column="start_date"></result>
+        <result property="endDate" column="end_date"></result>
+        <result property="updatedAt" column="updated_at"></result>
+        <result property="createMobile" column="create_mobile"></result>
+        <result property="studentNum" column="student_num"></result>
+        <result property="cataId" column="cataId"></result>
+        <result property="polyTitle" column="poly_title"></result>
+        <result property="vid" column="vid"></result>
+        <result property="fileSize" column="fileSize"></result>
+        <result property="duration" column="duration"></result>
+        <result property="sessionIds" column="sessionIds"></result>
+        <result property="fileId" column="fileId"></result>
+        <result property="channelId" column="channelId"></result>
+        <result property="mp4" column="mp4"></result>
+        <result property="m3u8" column="m3u8"></result>
+        <result property="isRevised" column="is_revised"></result>
+        <result property="cover" column="cover"></result>
+        <result property="videoStatus" column="videoStatus"></result>
+    </resultMap>
+
+    <select id="selectIntelligentRecordList" parameterType="com.ruoyi.web.controller.xiaoyi.domain.IntelligentRecord" resultMap="intelligentRecordsMap">
+        SELECT * FROM `ty_poly_record_course`
+        <trim prefix="where" prefixOverrides="and | or">
+            <if test="isRevised!=null and isRevised!=0">
+                and is_revised = #{isRevised}
+            </if>
+            <if test="siteName !=null and siteName !=''">
+                and org_code = (
+                  SELECT org_id FROM `lz_pf_user_info`
+                  WHERE real_name like concat('%', #{siteName}, '%')
+                  LIMIT 0,1
+                )
+            </if>
+            <if test="courseName !=null and courseName !=''">
+                and course_name like concat('%', #{courseName}, '%')
+            </if>
+            <if test="createName !=null and createName !=''">
+                and org_code = (
+                  SELECT org_id FROM `lz_pf_user_info`
+                  WHERE nick_name like concat('%', #{createName}, '%')
+                  LIMIT 0,1
+                )
+            </if>
+            <if test="teacherName !=null and teacherName !=''">
+                and teacher_name like concat('%', #{teacherName}, '%')
+            </if>
+            <if test="videoStatus !=null and videoStatus !=0 ">
+                and videoStatus = #{videoStatus}
+            </if>
+            and is_show = '1' and is_del='1'
+        </trim>
+
+        <if test="orderByType !=null and orderByType ==0">
+            ORDER BY reg_date DESC
+        </if>
+        <if test="orderByType !=null and orderByType !=0">
+            ORDER BY reg_date ASC
+        </if>
+
+    </select>
+
+    <select id="selectIntelligentRecords" resultMap="intelligentRecordsMap">
+        SELECT * FROM `ty_poly_record_course`
+        <trim prefix="where" prefixOverrides="and | or">
+            <if test="isRevised!=null and isRevised!=0">
+                and is_revised = #{isRevised}
+            </if>
+            <if test="code !=null and code!= ''">
+                and id like concat('%', #{code}, '%')
+                or course_name like concat('%', #{code}, '%')
+                or teacher_name like concat('%', #{code}, '%')
+                or class like concat('%', #{code}, '%')
+                or cataId like concat('%', #{code}, '%')
+                or fileId like concat('%', #{code}, '%')
+                or poly_title like concat('%', #{code}, '%')
+            </if>
+            and is_show = '1' and is_del='1'
+        </trim>
+        ORDER BY updated_at DESC
+    </select>
+
+    <select id="selectById" resultMap="intelligentRecordsMap">
+        SELECT * FROM `ty_poly_record_course`
+        where id = #{id} and is_show = '1' and is_del='1'
+    </select>
+
+    <select id="getCreateName" resultType="String">
+        SELECT nick_name FROM `lz_pf_user_info`
+        WHERE org_id = #{orgCode}
+        LIMIT 0,1
+    </select>
+
+    <select id="getSiteName" resultType="String">
+        SELECT real_name FROM `lz_pf_user_info`
+        WHERE org_id = #{orgCode}
+        LIMIT 0,1
+    </select>
+
+    <update id="deleteById" parameterType="com.ruoyi.web.controller.xiaoyi.domain.IntelligentRecord">
+        UPDATE `ty_poly_record_course` SET is_del='2'
+        WHERE id = #{id}
+    </update>
+
+</mapper>

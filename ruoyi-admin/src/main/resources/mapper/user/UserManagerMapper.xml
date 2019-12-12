@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.web.controller.user.dao.UserManagerMapper">
+
+    <resultMap type="com.ruoyi.web.controller.user.bean.UserInfoBean" id="UserManagerResult">
+        <result property="userId" column="user_id"/>
+        <result property="telNum" column="tel_num"/>
+        <result property="userState" column="user_state"/>
+        <result property="userType" column="user_type"/>
+        <result property="password" column="password"/>
+
+        <result property="realName" column="real_name"/>
+        <result property="nickName" column="nick_name"/>
+        <result property="contacts" column="contacts"/>
+        <result property="headImg" column="head_img_url"/>
+        <result property="birthday" column="birthday"/>
+        <result property="edu" column="educational"/>
+        <result property="labels" column="labels"/>
+        <result property="city" column="city"/>
+        <result property="org" column="org"/>
+        <result property="personalInfo" column="personal_info"/>
+        <result property="personalBG" column="personal_bg"/>
+        <result property="labels" column="labels"/>
+        <result property="createTime" column="create_time"/>
+        <result property="updateTime" column="update_time"/>
+    </resultMap>
+
+    <resultMap type="com.ruoyi.web.controller.user.bean.ResumeBean" id="ResumeResult">
+        <result property="resumeId" column="resume_id"/>
+        <result property="startDate" column="start_date"/>
+        <result property="endDate" column="end_date"/>
+        <result property="company" column="company"/>
+        <result property="title" column="title"/>
+    </resultMap>
+
+    <select id="selectUserInfo" parameterType="UserInfoBean" resultMap="UserManagerResult">
+        SELECT u.user_id, u.tel_num, u.user_type, u.tel_num, u.password, t.real_name, t.nick_name, t.labels, t.contacts,
+        t.create_time, t.update_time
+        FROM lz_pf_user u, lz_pf_user_info t
+        WHERE u.user_id = t.user_id AND u.is_delete ='1' AND u.user_type = #{userType}
+        <if test="telNum != null and telNum != ''">
+            AND u.tel_num like concat('%', #{telNum}, '%')
+        </if>
+        <if test="nickName != null and nickName != ''">
+            AND t.nick_name like concat('%', #{nickName}, '%')
+        </if>
+        <if test="realName != null and realName != ''">
+            AND t.real_name like concat('%', #{realName}, '%')
+        </if>
+        <if test="contacts != null and contacts != ''">
+            AND t.contacts like concat('%', #{contacts}, '%')
+        </if>
+        <if test="labels != null and labels != ''">
+            AND t.labels like concat('%', #{labels}, '%')
+        </if>
+        ORDER BY t.create_time DESC
+
+    </select>
+
+
+    <select id="selectUserInfoDetail" parameterType="String" resultMap="UserManagerResult">
+        SELECT u.user_id, u.tel_num, u.user_state, u.user_type, t.real_name, t.nick_name, t.contacts, t.head_img_url, t.birthday, t.educational, t.labels, t.city, t.org, t.personal_info,
+        t.personal_bg, t.create_time, t.update_time
+        FROM lz_pf_user u, lz_pf_user_info t
+        WHERE u.user_id = #{userId} AND u.user_id = t.user_id AND u.is_delete ='1'
+    </select>
+
+    <select id="selectResume" parameterType="String" resultMap="ResumeResult">
+        SELECT r.resume_id, r.start_date, r.end_date, r.company, r.title
+        FROM lz_pf_resume r
+        WHERE r.user_info_id = #{userId} AND r.is_delete ='1'
+    </select>
+
+
+    <select id="selectLeadsByTel" parameterType="String" resultType="int">
+        select count(1) from lz_pf_user where tel_num=#{telNum} AND is_delete='1'
+    </select>
+
+    <insert id="insertLeads" parameterType="UserInfoBean" keyProperty="userId">
+        insert into lz_pf_user(
+        <if test="userId != null and userId != ''">user_id,</if>
+        <if test="telNum != null and telNum != ''">tel_num,</if>
+        <if test="userType != null and userType != ''">user_type,</if>
+        <if test="userState != null and userState != ''">user_state,</if>
+        <if test="password != null and password != ''">password,</if>
+        is_delete
+        )values(
+        <if test="userId != null and userId != ''">#{userId},</if>
+        <if test="telNum != null and telNum != ''">#{telNum},</if>
+        <if test="userType != null and userType != ''">#{userType},</if>
+        <if test="userState != null and userState != ''">#{userState},</if>
+        <if test="password != null and password != ''">#{password},</if>
+        '1'
+        )
+    </insert>
+
+
+    <insert id="insertLeadsInfo" parameterType="OperatorBean" keyProperty="userInfoId">
+        insert into lz_pf_user_info(
+        <if test="userId != null and userId != ''">user_id,</if>
+        <if test="userInfoId != null and userInfoId != ''">user_info_id,</if>
+        <if test="realName != null and realName != ''">real_name,</if>
+        <if test="nickName != null and nickName != ''">nick_name,</if>
+        is_delete
+
+        )values(
+        <if test="userId != null and userId != ''">#{userId},</if>
+        <if test="userInfoId != null and userInfoId != ''">#{userInfoId},</if>
+        <if test="realName != null and realName != ''">#{realName},</if>
+        <if test="nickName != null and nickName != ''">#{nickName},</if>
+        '1'
+        )
+    </insert>
+
+    <update id="updateUserById" parameterType="String">
+        update lz_pf_user
+        <set>
+            is_delete = '2'
+        </set>
+        where user_id = #{userId}
+    </update>
+
+    <update id="updateUserInfoById" parameterType="String">
+        update lz_pf_user_info
+        <set>
+            is_delete = '2'
+        </set>
+        where user_id = #{userId}
+    </update>
+
+
+    <delete id="updateUserByIds" parameterType="String">
+        UPDATE FROM lz_pf_user
+        <set>
+            is_delete = '2',update_time = sysdate()
+        </set>
+        WHERE user_id IN
+        <foreach item="userId" collection="array" open="(" separator="," close=")">
+            #{userId}
+        </foreach>
+    </delete>
+
+</mapper>

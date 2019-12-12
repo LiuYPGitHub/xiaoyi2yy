@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.web.controller.xiaoyi.dao.LiveTeacherMapper">
+
+    <select id="selectIdByMobile" resultType="java.lang.String" parameterType="String">
+        SELECT id FROM `ty_teachers`
+        WHERE mobile = #{mobile}
+    </select>
+
+    <update id="updateTeacherIdById" parameterType="string">
+        UPDATE `ty_teachers` SET teacher_id = #{teacherId}
+        WHERE id = #{id}
+    </update>
+
+</mapper>

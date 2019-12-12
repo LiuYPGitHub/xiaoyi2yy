@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.web.controller.xiaoyi.dao.TaskLoggerMapper">
+
+    <insert id="insertTaskLogger" parameterType="com.ruoyi.web.controller.xiaoyi.domain.TaskLogger">
+        insert into `ty_task_logs`
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="taskName !='' and taskName!=null">
+                task_name,
+            </if>
+            <if test="result !='' and result!=null">
+                result,
+            </if>
+            <if test="args !='' and args!=null">
+                args,
+            </if>
+            <if test="error !='' and error!=null">
+                error,
+            </if>
+            <if test="updatedAt!=null">
+                updated_at,
+            </if>
+            <if test="createdAt!=null">
+                created_at,
+            </if>
+            <if test="orgCode !='' and orgCode!=null">
+                org_code,
+            </if>
+        </trim>
+        <trim prefix="values(" suffix=")" suffixOverrides=",">
+            <if test="taskName !='' and taskName!=null">
+                #{taskName},
+            </if>
+            <if test="result !='' and result!=null">
+                #{result},
+            </if>
+            <if test="args !='' and args!=null">
+                #{args},
+            </if>
+            <if test="error !='' and error!=null">
+                #{error},
+            </if>
+            <if test="updatedAt!=null">
+                #{updatedAt},
+            </if>
+            <if test="createdAt!=null">
+                #{createdAt},
+            </if>
+            <if test="orgCode !='' and orgCode!=null">
+                #{orgCode},
+            </if>
+        </trim>
+    </insert>
+
+</mapper>

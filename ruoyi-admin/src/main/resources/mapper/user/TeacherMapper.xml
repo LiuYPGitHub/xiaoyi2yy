@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.web.controller.user.dao.OrgMapper">
+
+    <resultMap type="com.ruoyi.web.controller.user.bean.TeacherBean" id="teacherResult">
+        <id property="teacherId" column="teacher_id"/>
+        <result property="tyTeacherId" column="ty_teacher_id"/>
+    </resultMap>
+
+    <select id="selectTeacherByTel" parameterType="String" resultType="int">
+        select count(1) from lz_pf_teacher where phone=#{phone} AND is_delete='1'
+    </select>
+
+
+    <insert id="insertTeacher" parameterType="TeacherBean" keyProperty="teacherId">
+        insert into lz_pf_user(
+        <if test="teacherId != null and teacherId != ''">teacher_id,</if>
+        <if test="phone != null and phone != ''">phone,</if>
+        <if test="orgId != null and orgId != ''">org_id,</if>
+        <if test="orgName != null and orgName != ''">org_name,</if>
+        <if test="tyTeacherId != null and tyTeacherId != ''">ty_teacher_id,</if>
+        <if test="profession != null and profession != ''">profession,</if>
+        <if test="platform != null and platform != ''">platform,</if>
+        <if test="profession != null and profession != ''">profession,</if>
+        <if test="remarks != null and remarks != ''">remarks,</if>
+        is_delete
+
+        )values(
+        <if test="teacherId != null and teacherId != ''">#{teacherId},</if>
+        <if test="phone != null and phone != ''">#{phone},</if>
+        <if test="orgId != null and orgId != ''">#{orgId},</if>
+        <if test="orgName != null and orgName != ''">#{orgName},</if>
+        <if test="tyTeacherId != null and tyTeacherId != ''">#{tyTeacherId},</if>
+        <if test="profession != null and profession != ''">#{profession},</if>
+        <if test="platform != null and platform != ''">#{platform},</if>
+        <if test="profession != null and profession != ''">#{profession},</if>
+        <if test="remarks != null and remarks != ''">#{remarks},</if>
+        '1'
+        )
+    </insert>
+
+</mapper>

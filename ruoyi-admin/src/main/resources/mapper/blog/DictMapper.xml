@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.web.controller.blog.dao.DictMapper">
+
+    <resultMap type="Dict" id="DictResultMap">
+        <id property="codeId" column="code_id"/>
+        <result property="codeType" column="code_type"/>
+        <result property="codeNo" column="code_no"/>
+        <result property="codeName" column="code_name"/>
+        <result property="codeFlay" column="code_flay"/>
+        <result property="createBy" column="create_by"/>
+        <result property="createTime" column="create_time"/>
+        <result property="updateBy" column="update_by"/>
+        <result property="updateTime" column="update_time"/>
+    </resultMap>
+
+    <!--  根据字典类型查询字典数据-->
+    <select id="selectDictDataByType" parameterType="Dict" resultMap="DictResultMap">
+        SELECT code_id,
+               code_type,
+               code_no,
+               code_name,
+               code_flay,
+               create_by,
+               create_time,
+               update_by,
+               update_time
+        FROM lz_code_list
+        WHERE code_flay = 1
+        AND code_type = #{codeType}
+    </select>
+
+    <!--  根据字典类型和字典键值查询字典数据信息-->
+    <select id="selectDictLabel1" resultType="String">
+        select dict_label
+        from lz_code_list
+        where code_type = #{codeType} AND code_name = #{codeName}
+    </select>
+
+    <select id="selectDictDataList" parameterType="Dict" resultMap="DictResultMap">
+        SELECT  code_id,
+                code_type,
+                code_no,
+                code_name,
+                code_flay,
+                create_by,
+                create_time,
+                update_by,
+                update_time
+        FROM lz_code_list
+        WHERE code_flay != 3
+            <if test="codeType != null and codeType != ''">
+                AND code_type like concat('%', #{codeType}, '%')
+            </if>
+            <if test="codeName != null and codeName != ''">
+                AND code_name like concat('%', #{codeName}, '%')
+            </if>
+            <if test="codeFlay != null and codeFlay != ''">
+                AND code_flay = #{codeFlay}
+            </if>
+    </select>
+
+    <insert id="insertDictData" parameterType="Dict">
+        insert into lz_code_list (
+                                  code_type,code_no,code_name,code_flay) VALUES (
+                                  #{codeType},
+                                  #{codeNo},
+                                  #{codeName},
+                                  #{codeFlay})
+    </insert>
+
+    <delete id="deleteDictTypeByIds" parameterType="Long">
+        delete from lz_code_list where code_id in
+        <foreach collection="array" item="codeId" open="(" separator="," close=")">
+            #{codeId}
+        </foreach>
+    </delete>
+
+    <select id="selectDictTypeById" parameterType="String" resultMap="DictResultMap">
+        SELECT code_id,code_type,code_no,code_name,code_flay,create_by,create_time,update_by,update_time
+        FROM lz_code_list
+        where code_id  = #{codeId}
+    </select>
+
+    <update id="updateDictData" parameterType="Dict">
+        UPDATE lz_code_list
+        set code_type = #{codeType},
+            code_no   = #{codeNo},
+            code_name = #{codeName},
+            code_flay = #{codeFlay},
+            update_by = #{createBy}
+        where code_id = #{codeId}
+    </update>
+</mapper>

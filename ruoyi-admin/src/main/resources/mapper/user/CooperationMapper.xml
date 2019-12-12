@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.web.controller.user.dao.CooperationMapper">
+
+    <resultMap type="com.ruoyi.web.controller.user.bean.CooperationBean" id="CooperationResult">
+        <result property="cooperationId" column="cooperation_id"/>
+        <result property="orgId" column="org_id"/>
+        <result property="orgName" column="org_name"/>
+        <result property="orgTel" column="org_tel"/>
+        <result property="contacts" column="contacts"/>
+        <result property="type" column="type"/>
+        <result property="cooperationObjId" column="cooperation_obj_id"/>
+        <result property="info" column="info"/>
+        <result property="cooperationObjName" column="real_name"/>
+        <result property="cooperationObjNickName" column="nick_name"/>
+        <result property="createTime" column="create_time"/>
+        <result property="updateTime" column="update_time"/>
+    </resultMap>
+
+    <select id="selectCooperation" parameterType="CooperationBean" resultMap="CooperationResult">
+        SELECT c.cooperation_id, c.org_id, c.org_name ,c.org_tel, c.contacts, c.type, c.cooperation_obj_id, c.info,
+        ui.real_name, ui.nick_name
+        FROM lz_pf_cooperation c
+        left join lz_pf_user u on u.user_id = c.cooperation_obj_id
+        left join lz_pf_user_info ui on u.user_id = ui.user_id
+        WHERE c.is_delete ='1'
+
+        <if test="orgName != null and orgName != ''">
+            AND c.org_name like concat('%', #{orgName}, '%')
+        </if>
+        <if test="type != null and type != ''">
+            AND c.type =#{type}
+        </if>
+        ORDER BY c.create_time DESC
+    </select>
+
+    <select id="selectCooperationDetail" parameterType="String" resultMap="CooperationResult">
+        SELECT c.cooperation_id, c.org_id, c.org_name ,c.org_tel, c.sex, c.contacts, c.type, c.cooperation_obj_id, c.info, ui.real_name, ui.nick_name, c.create_time, c.update_time
+        FROM lz_pf_cooperation c
+        left join lz_pf_user u on u.user_id = c.cooperation_obj_id
+        left join lz_pf_user_info ui on u.user_id = ui.user_id
+        WHERE c.is_delete ='1' AND c.cooperation_id=#{cooperationId}  ORDER BY c.create_time DESC
+    </select>
+
+
+</mapper>

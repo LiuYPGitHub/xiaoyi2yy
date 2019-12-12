@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<head>
+	<th:block th:include="include :: header('LEADS库')" />
+</head>
+<body class="gray-bg">
+	<div class="container-div">
+		<div class="row">
+			<div class="col-sm-12 search-collapse">
+				<form id="post-form">
+					<div class="select-list">
+						<ul>
+							<li>
+								机构名称：<input type="text" name="realName"/>
+							</li>
+							<li>
+								家长姓名：<input type="text" name="leParName"/>
+							</li>
+							<li>
+								家长电话号码：<input type="text" name="leParPhone"/>
+							</li>
+							<li>
+								孩子姓名：<input type="text" name="leChiName"/>
+							</li>
+							<li>
+								<a class="btn btn-primary btn-rounded btn-sm" onclick="$.table.search()"><i class="fa fa-search"></i>&nbsp;搜索</a>
+							    <a class="btn btn-warning btn-rounded btn-sm" onclick="$.form.reset()"><i class="fa fa-refresh"></i>&nbsp;重置</a>
+							</li>
+						</ul>
+					</div>
+				</form>
+			</div>
+			
+			<div class="btn-group-sm" id="toolbar" role="group">
+				<a class="btn btn-warning" onclick="$.table.exportExcel()">
+		            <i class="fa fa-download"></i> 导出
+		        </a>
+	        </div>
+	        
+	        <div class="col-sm-12 select-table table-striped">
+			    <table id="bootstrap-table" data-mobile-responsive="true"></table>
+			</div>
+		</div>
+	</div>
+	<th:block th:include="include :: footer" />
+	<script th:inline="javascript">
+		var prefix = ctx + "blog/leads";
+		$(function() {
+		    var options = {
+		        url: prefix + "/list",
+				detailUrl: prefix + "/detailed/{id}",
+                exportUrl: prefix + "/export",
+				modalName: "LEADS",
+		        columns: [
+		        {
+		            field: 'leParName',
+		            title: '家长姓名'
+		        },
+		        {
+		            field: 'leParPhone',
+		            title: '家长电话'
+		            // sortable: true
+		        },
+		        {
+		            field: 'leChiName',
+		            title: '孩子姓名'
+		        },
+		        {
+		            field: 'leChiAge',
+		            title: '孩子年龄'
+		        },
+				{
+					field: 'realName',
+					title: '所属机构'
+				},
+		        {
+		            title: '操作',
+		            align: 'center',
+		            formatter: function(value, row, index) {
+		                var actions = [];
+		                actions.push('<a class="btn btn-success btn-xs" href="javascript:void(0)" onclick="$.operate.detail(\'' + row.leId + '\')"><i class="fa fa-search"></i>查看</a> ');
+		                return actions.join('');
+		            }
+		        }]
+		    };
+		    $.table.init(options);
+		});
+	</script>
+</body>
+</html>

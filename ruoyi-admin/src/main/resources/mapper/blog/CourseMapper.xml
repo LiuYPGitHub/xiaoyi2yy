@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+		PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+		"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.web.controller.blog.dao.CourseMapper">
+
+	<resultMap type="Course" id="CourseResult">
+		<id property="coId" column="co_id"/>
+		<result property="userId" column="user_id"/>
+		<result property="coTitle" column="co_title"/>
+		<result property="coType" column="co_type"/>
+		<result property="coStatus" column="co_status"/>
+		<result property="coLinkUrl" column="co_link_url"/>
+		<result property="imgUrl" column="img_url"/>
+		<result property="isDelete" column="is_delete"/>
+		<result property="createBy" column="create_by"/>
+		<result property="createTime" column="create_time"/>
+		<result property="updateBy" column="update_by"/>
+		<result property="updateTime" column="update_time"/>
+		<result property="imgUrl" column="img_url"/>
+		<result property="evtRelTime" column="evt_rel_time"/>
+		<result property="evtRelName" column="evt_rel_name"/>
+	</resultMap>
+
+    <select id="selectCourseList" parameterType="com.ruoyi.web.controller.blog.domain.Course" resultMap="CourseResult">
+		SELECT c.co_id,c.co_title,c.evt_rel_name,c.evt_rel_time,c.co_type,c.create_by,c.create_time
+		FROM lz_pf_course c
+		WHERE c.is_delete = 1
+        <if test="coTitle != null and coTitle != ''">
+            AND c.co_title like concat('%', #{coTitle}, '%')
+        </if>
+		<if test="evtRelName != null and evtRelName != ''">
+			AND c.evt_rel_name like concat('%', #{evtRelName}, '%')
+		</if>
+		<if test="coType != null and coType != ''">
+			AND c.co_type = #{coType}
+		</if>
+		order by c.create_time desc
+    </select>
+
+	<select id="selectDetailedById" parameterType="String" resultMap="CourseResult">
+		SELECT c.co_id,c.co_title,c.evt_rel_name,c.evt_rel_time,c.co_type,c.img_url,c.co_link_url,c.create_by,c.create_time,c.update_time
+		FROM lz_pf_course c
+		WHERE c.is_delete = 1 and c.co_id = #{coId}
+		order by c.create_time desc
+	</select>
+</mapper>

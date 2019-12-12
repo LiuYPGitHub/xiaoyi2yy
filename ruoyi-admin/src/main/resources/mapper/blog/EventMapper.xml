@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+		PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+		"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.web.controller.blog.dao.EventMapper">
+
+	<resultMap type="Case" id="CaseResult">
+		<id property="evtId" column="evt_id"/>
+		<result property="userId" column="user_id"/>
+		<result property="evtTitle" column="evt_title"/>
+		<result property="evtType" column="evt_type"/>
+		<result property="evtWay" column="evt_way"/>
+		<result property="evtStartTime" column="evt_start_time"/>
+		<result property="evtEndTime" column="evt_end_time"/>
+		<result property="evtAddress" column="evt_address"/>
+		<result property="evtContent" column="evt_content"/>
+		<result property="evtImgUrl" column="evt_img_url"/>
+		<result property="evtStatus" column="evt_status"/>
+		<result property="evtCheckStatus" column="evt_check_status"/>
+		<result property="isDelete" column="is_delete"/>
+		<result property="createBy" column="create_by"/>
+		<result property="createTime" column="create_time"/>
+		<result property="updateBy" column="update_by"/>
+		<result property="updateTime" column="update_time"/>
+		<result property="evtCoDdress" column="evt_co_ddress"/>
+		<result property="userType" column="user_type"/>
+		<result property="evtRelTime" column="evt_rel_time"/>
+		<result property="evtRelName" column="evt_rel_name"/>
+	</resultMap>
+
+    <select id="selectCaseList" parameterType="com.ruoyi.web.controller.blog.domain.Case" resultMap="CaseResult">
+        SELECT e.evt_id,
+               e.evt_title,
+               e.evt_rel_name,
+               u.user_type,
+               e.evt_rel_time,
+               e.evt_type,
+               e.evt_way,
+               e.evt_start_time,
+               e.evt_end_time,
+               e.create_by,
+               e.create_time
+        FROM lz_pf_event e
+        LEFT JOIN lz_pf_user u ON e.user_id = u.user_id
+        WHERE e.evt_status = 0 and e.is_delete = 1
+        <if test="evtTitle != null and evtTitle != ''">
+            AND e.evt_title like concat('%',#{evtTitle},'%')
+        </if>
+		<if test="evtRelName != null and evtRelName != ''">
+			AND e.evt_rel_name like concat('%', #{evtRelName}, '%')
+		</if>
+		<if test="evtType != null and evtType != ''">
+			AND e.evt_type = #{evtType}
+		</if>
+		order by e.create_time desc
+    </select>
+
+	<select id="selectDetailedById" parameterType="String" resultMap="CaseResult">
+		SELECT e.evt_id,
+			   e.evt_title,
+			   e.evt_rel_name,
+			   u.user_type,
+			   e.evt_rel_time,
+			   e.evt_type,
+			   e.evt_way,
+			   e.evt_start_time,
+			   e.evt_end_time,
+		       e.evt_content,
+			   e.evt_img_url,
+			   e.evt_co_ddress,
+			   e.evt_address,
+			   e.create_by,
+			   e.create_time
+		FROM lz_pf_event e
+		LEFT JOIN lz_pf_user u ON e.user_id = u.user_id
+		WHERE e.evt_status = 0 and e.is_delete = 1 and e.evt_id = #{evtId}
+		order by e.create_time desc
+	</select>
+</mapper>

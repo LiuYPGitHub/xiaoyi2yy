@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+		PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+		"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.web.controller.blog.dao.LeadsMapper">
+
+	<resultMap type="Leads" id="LeadsResult">
+		<id property="leId" column="le_id"/>
+		<result property="realName" column="real_name"/>
+		<result property="leParName" column="le_par_name"/>
+		<result property="leParPhone" column="le_par_phone"/>
+		<result property="leChiName" column="le_chi_name"/>
+		<result property="leChiAge" column="le_chi_age"/>
+		<result property="city" column="city"/>
+		<result property="leSchool" column="le_school"/>
+		<result property="leIntenType" column="le_inten_type"/>
+		<result property="isDelete" column="is_delete"/>
+		<result property="createBy" column="create_by"/>
+		<result property="createTime" column="create_time"/>
+		<result property="updateBy" column="update_by"/>
+		<result property="updateTime" column="update_time"/>
+		<result property="leChiGen" column="le_chi_gen"/>
+		<result property="grade" column="grade"/>
+		<result property="cityInput" column="city_input"/>
+
+		<result property="areaCode" column="area_code"/>
+		<result property="areaName" column="area_name"/>
+		<result property="areaParentCode" column="area_parent_code"/>
+		<result property="areaLevel" column="area_level"/>
+		<result property="areaFlag" column="area_flag"/>
+		<result property="createBy" column="create_by"/>
+		<result property="createTime" column="create_time"/>
+		<result property="updateBy" column="update_by"/>
+		<result property="updateTime" column="update_time"/>
+	</resultMap>
+
+    <select id="selectLeadsList" parameterType="com.ruoyi.web.controller.blog.domain.Leads" resultMap="LeadsResult">
+		SELECT l.le_id,l.le_par_name,l.le_par_phone,l.le_chi_name,l.le_chi_age,l.real_name
+		FROM lz_pf_leads l
+		WHERE l.is_delete = 1
+        <if test="realName != null and realName != ''">
+            AND l.real_name like concat('%', #{realName}, '%')
+        </if>
+		<if test="leParName != null and leParName != ''">
+			AND l.le_par_name like concat('%', #{leParName}, '%')
+		</if>
+		<if test="leParPhone != null and leParPhone != ''">
+			AND l.le_par_phone like concat('%', #{leParPhone}, '%')
+		</if>
+		<if test="leChiName != null and leChiName != ''">
+			AND l.le_chi_name like concat('%', #{leChiName}, '%')
+		</if>
+		order by l.create_time desc
+    </select>
+
+	<select id="selectDetailedById" parameterType="String" resultMap="LeadsResult">
+		SELECT l.le_id,l.le_par_name,l.le_par_phone,l.le_chi_name,l.le_chi_age,l.real_name,l.city,l.le_school,l.le_inten_type,l.le_chi_gen,l.grade,l.create_by,l.create_time,l.city_input,l.update_time
+		FROM lz_pf_leads l
+		where l.is_delete = 1 and l.le_id = #{leId}
+		order by l.create_time desc
+	</select>
+
+	<select id="selectCode" resultType="com.ruoyi.web.controller.blog.domain.Leads" resultMap="LeadsResult">
+		select area_code,area_name,area_parent_code
+		from lz_area_code
+		where area_code = #{areaCode}
+	</select>
+
+<!--	<select id="selectLeads" resultType="com.ruoyi.web.controller.blog.domain.Leads" resultMap="LeadsResult">-->
+<!--		SELECT l.le_id,l.le_par_name,l.le_par_phone,l.le_chi_name,l.le_chi_age,l.real_name-->
+<!--		FROM lz_pf_leads l-->
+
+<!--	</select>-->
+</mapper>

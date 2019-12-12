@@ -1,0 +1,7 @@
+Application Version: ${ruoyi.version}
+ ____  ___           _  _  _  _
+(_   )/ __)   ___   ( \/ )( \/ )
+ / /_( (__   (___)   \  /  \  /
+(____)\___)          (__)  (__)
+
+Spring Boot Version: ${spring-boot.version}

@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<head>
+    <th:block th:include="include :: header('订单用户列表')"/>
+    <th:block th:include="include :: datetimepicker-css"/>
+</head>
+</head>
+<body class="gray-bg">
+<div class="container-div">
+    <div class="row">
+        <div class="col-sm-12 search-collapse">
+            <form id="org-form">
+                <div class="select-list">
+                    <ul>
+                        <li>
+                            机构名称：<input type="text" name="siteName"/>
+                        </li>
+                        <li>
+                            课程名称：<input type="text" name="courseName"/>
+                        </li>
+
+                        <li>
+                            用户手机号码：<input type="text" name="userMobile"/>
+                        </li>
+                        <li>
+                            支付状态：<select name="payStatus">
+                            <option value="">所有</option>
+                            <option value="交易成功">交易成功</option>
+                            <option value="退款成功">退款成功</option>
+                        </select>
+                        </li>
+
+                        <li>
+                            订单完成时间：<select name="orderBy">
+                            <option value="DESC">最新数据</option>
+                            <option value="ASC">默认</option>
+                        </select>
+                            <!--  <li>
+                                  渠道名称：<select name="channelName">
+                                  <option value="">所有</option>
+                                  <option th:each="channel:${channel}" th:value="${channel.channelName}"
+                                          th:text="${channel.channelName}"></option>
+                              </select>
+                              </li>-->
+                        <li class="input-daterange input-group">
+                            <label>订单完成周期时间： </label>
+                            <input type="text" class="datetimepicker" id="beginTime" placeholder="开始时间"
+                                   name="beginTime" autocomplete="off"/>
+                            <span> - </span>
+                            <input type="text" class="datetimepicker" id="endTime" placeholder="结束时间"
+                                   name="endTime" autocomplete="off"/>
+                        </li>
+                        <li>
+                            <a class="btn btn-primary btn-rounded btn-sm" onclick="$.table.search()"><i
+                                    class="fa fa-search"></i>&nbsp;搜索</a>
+                            <a class="btn btn-warning btn-rounded btn-sm" onclick="$.form.reset()"><i
+                                    class="fa fa-refresh"></i>&nbsp;重置</a>
+                        </li>
+                    </ul>
+                </div>
+            </form>
+        </div>
+
+        <div class="btn-group-sm" id="toolbar" role="group">
+            <a class="btn btn-warning" onclick="$.table.exportExcel()">
+                <i class="fa fa-download"></i> 导出
+            </a>
+        </div>
+
+        <div class="col-sm-12 select-table table-striped">
+            <table id="bootstrap-table" data-mobile-responsive="true"></table>
+        </div>
+    </div>
+</div>
+<th:block th:include="include :: footer"/>
+<th:block th:include="include :: datetimepicker-js"/>
+
+<script th:inline="javascript">
+
+    var prefix = ctx + "order/user";
+
+    $(function () {
+        var options = {
+            url: prefix + "/list",
+            exportUrl: prefix + "/export",
+            modalName: "用户订单列表",
+            showPageGo: true,
+            columns: [
+                {
+                    field: 'userName',
+                    title: '用户名称'
+                },
+                {
+                    field: 'userMobile',
+                    title: '用户手机号码'
+                },
+                {
+                    field: 'courseName',
+                    title: '课程名称'
+                },
+                {
+                    field: 'siteName',
+                    title: '机构名称'
+                },
+
+                {
+                    field: 'primeCost',
+                    title: '课程售价'
+                },
+                {
+                    field: 'payStatus',
+                    title: '支付状态'
+                },
+                {
+                    field: 'channelName',
+                    title: '渠道名称'
+                },
+                {
+                    field: 'orderFinishDate',
+                    title: '订单完成日期'
+                }]
+        };
+        $.table.init(options);
+
+
+    });
+
+    $(function () {
+
+        $(".datetimepicker").datetimepicker({
+            format: "yyyy-mm-dd hh:ii:ss",
+            autoclose: true
+        });
+    });
+
+
+</script>
+</body>
+</html>

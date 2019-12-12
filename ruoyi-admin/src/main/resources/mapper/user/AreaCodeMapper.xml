@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.web.controller.user.dao.AreaCodeMapper">
+
+    <resultMap type="AreaCodeBean" id="AreaCodeResult">
+        <result property="areaCode" column="area_code"/>
+        <result property="areaName" column="area_name"/>
+        <result property="areaPCode" column="area_parent_code"/>
+    </resultMap>
+
+    <select id="selectAreaCode" parameterType="String" resultMap="AreaCodeResult">
+        SELECT c.area_code, c.area_name, c.area_parent_code
+        FROM lz_area_code c
+        WHERE c.area_code=#{codeId}
+    </select>
+
+
+</mapper>

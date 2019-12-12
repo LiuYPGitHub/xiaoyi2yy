@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.web.controller.xiaoyi.dao.RecordCourseMapper">
+
+    <resultMap id="recordCourseMap" type="com.ruoyi.web.controller.xiaoyi.domain.RecordCourse">
+        <id property="id" column="id"></id>
+        <result property="createdAt" column="created_at"></result>
+        <result property="orgCode" column="org_code"></result>
+        <result property="status" column="status"></result>
+        <result property="code" column="code"></result>
+        <result property="classId" column="class_id"></result>
+        <result property="courseName" column="course_name"></result>
+        <result property="teacherName" column="teacher_name"></result>
+        <result property="teacherInfo" column="teacher_info"></result>
+        <result property="desc" column="desc"></result>
+        <result property="classType" column="class_type"></result>
+        <result property="classTag" column="class_tag"></result>
+        <result property="classDifficult" column="class_difficult"></result>
+        <result property="coverImg" column="cover_img"></result>
+        <result property="courseIntroduceImg" column="course_introduce_img"></result>
+        <result property="courseNum" column="course_num"></result>
+        <result property="classHour" column="class_hour"></result>
+        <result property="courseObj" column="course_obj"></result>
+        <result property="courseFeature" column="course_feature"></result>
+        <result property="courseContent" column="course_content"></result>
+        <result property="classInfo" column="class"></result>
+        <result property="textBook" column="textbook"></result>
+        <result property="price" column="price"></result>
+        <result property="isDel" column="is_del"></result>
+        <result property="isShow" column="is_show"></result>
+        <result property="createDate" column="reg_date"></result>
+        <result property="startDate" column="start_date"></result>
+        <result property="endDate" column="end_date"></result>
+        <result property="updatedAt" column="updated_at"></result>
+        <result property="teacherImgage" column="teacher_img"></result>
+        <result property="showEvaluation" column="show_evaluation"></result>
+        <result property="createMobile" column="create_mobile"></result>
+        <result property="enrollStartDate" column="enroll_start_date"></result>
+        <result property="enrollEndDate" column="enroll_end_date"></result>
+        <result property="cost" column="cost"></result>
+        <result property="studentNum" column="student_num"></result>
+        <result property="cataId" column="cataId"></result>
+        <result property="polyTitle" column="poly_title"></result>
+        <result property="vid" column="vid"></result>
+        <result property="fileSize" column="fileSize"></result>
+        <result property="expirationDuration" column="expirationDuration"></result>
+        <result property="recordId" column="record_id"></result>
+        <result property="lessonIds" column="lesson_ids"></result>
+        <result property="createName" column="creator"></result>
+    </resultMap>
+
+    <select id="selectByLike" resultMap="recordCourseMap">
+        SELECT * FROM `ty_record_course`
+        <trim prefix="where" prefixOverrides="and | or">
+            <if test="siteName!=null and siteName!=''">
+                and org_code = (
+                  SELECT org_id FROM `lz_pf_user_info`
+                  WHERE real_name like concat('%', #{siteName}, '%')
+                  LIMIT 0,1
+                )
+            </if>
+            <if test="createName!=null and createName!=''">
+                and creator like concat('%', #{createName}, '%')
+            </if>
+            <if test="courseName !=null and courseName!= ''">
+                and course_name like concat('%', #{courseName}, '%')
+            </if>
+            <if test="status!=null and status!=-1">
+                and status = #{status}
+            </if>
+            and is_show = '1' and is_del='1' and is_online='1'
+        </trim>
+        <if test="orderByType!=null and orderByType!=0 ">
+            ORDER BY reg_date DESC
+        </if>
+    </select>
+
+    <select id="selectById" resultMap="recordCourseMap">
+        SELECT * FROM `ty_record_course`
+        where is_show = '1' and is_del='1' and is_online='1' and id = #{id}
+    </select>
+
+    <update id="updateCourse" parameterType="com.ruoyi.web.controller.xiaoyi.domain.RecordCourse">
+        update `ty_record_course`
+        <trim prefix="set" suffixOverrides=",">
+            <if test="status!=0">
+                status = #{status},
+            </if>
+        </trim>
+        WHERE id = #{id}
+    </update>
+
+</mapper>

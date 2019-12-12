@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.web.controller.user.dao.OperatorMapper">
+
+    <resultMap type="com.ruoyi.web.controller.user.bean.OperatorBean" id="OperatorResult">
+        <id property="userId" column="user_id"/>
+        <id property="userInfoId" column="user_info_id"/>
+        <result property="telNum" column="tel_num"/>
+        <result property="password" column="password"/>
+        <result property="realName" column="real_name"/>
+        <result property="orgId" column="org_id"/>
+        <result property="userState" column="user_state"/>
+        <result property="userType" column="user_type"/>
+        <result property="role" column="role"/>
+
+        <result property="isDelete" column="is_delete"/>
+    </resultMap>
+
+    <select id="selectOperator" parameterType="OperatorBean" resultMap="OperatorResult">
+        SELECT u.user_id, u.tel_num, u.user_type, u.user_state, u.tel_num, u.role, t.real_name, t.nick_name,
+        t.org_id, t.campus
+        FROM lz_pf_user u, lz_pf_user_info t
+        WHERE u.user_id = t.user_id AND u.is_delete ='1' AND t.org_id IS NOT NULL
+
+        <if test="realName != null and realName != ''">
+            AND t.real_name like concat('%', #{realName}, '%')
+        </if>
+        <if test="telNum != null and telNum != ''">
+            AND u.tel_num like concat('%', #{telNum}, '%')
+        </if>
+        <if test="orgId != null and orgId != ''">
+            AND t.org_id = #{orgId}
+        </if>
+        ORDER BY t.org_id DESC
+    </select>
+
+    <select id="selectOrgById" parameterType="String" resultMap="OperatorResult">
+        SELECT u.user_id, u.tel_num, u.user_type, u.role, u.tel_num, u.password, u.user_state, t.real_name, t.nick_name, t.org_id
+        FROM lz_pf_user u, lz_pf_user_info t
+        WHERE u.user_id = t.user_id AND u.is_delete ='1' AND u.user_id=#{userId}
+    </select>
+
+    <select id="selectOperatorByTel" parameterType="String" resultType="int">
+        select count(1) from lz_pf_user where tel_num=#{telNum} AND is_delete='1'
+    </select>
+
+    <select id="countOperator" parameterType="String" resultType="int">
+        select count(user_id) from lz_pf_user_info where org_id=#{orgId} AND is_delete='1'
+    </select>
+
+    <insert id="insertOperatorInfo" parameterType="OperatorBean" keyProperty="userInfoId">
+        insert into lz_pf_user_info(
+        <if test="userId != null and userId != ''">user_id,</if>
+        <if test="userInfoId != null and userInfoId != ''">user_info_id,</if>
+        <if test="realName != null and realName != ''">real_name,</if>
+        <if test="orgId != null and orgId != ''">org_id,</if>
+        is_delete
+
+        )values(
+        <if test="userId != null and userId != ''">#{userId},</if>
+        <if test="userInfoId != null and userInfoId != ''">#{userInfoId},</if>
+        <if test="realName != null and realName != ''">#{realName},</if>
+        <if test="orgId != null and orgId != ''">#{orgId},</if>
+        '1'
+        )
+    </insert>
+
+    <insert id="insertOperator" parameterType="OperatorBean" keyProperty="userId">
+        insert into lz_pf_user(
+        <if test="userId != null and userId != ''">user_id,</if>
+        <if test="telNum != null and telNum != ''">tel_num,</if>
+        <if test="userType != null and userType != ''">user_type,</if>
+        <if test="userState != null and userState != ''">user_state,</if>
+        <if test="password != null and password != ''">password,</if>
+        <if test="platform != null and platform != ''">platform,</if>
+
+        <if test="role != null and role != ''">role,</if>
+        is_delete
+
+        )values(
+        <if test="userId != null and userId != ''">#{userId},</if>
+        <if test="telNum != null and telNum != ''">#{telNum},</if>
+        <if test="userType != null and userType != ''">#{userType},</if>
+        <if test="userState != null and userState != ''">#{userState},</if>
+        <if test="password != null and password != ''">#{password},</if>
+        <if test="platform != null and platform != ''">#{platform},</if>
+        <if test="role != null and role != ''">#{role},</if>
+        '1'
+        )
+    </insert>
+
+
+    <update id="updateOperatorInfo" parameterType="OperatorBean">
+        update lz_pf_user_info
+        <set>
+            <if test="realName != null and realName != ''">real_name = #{realName}</if>
+        </set>
+        where user_id = #{userId}
+    </update>
+
+    <update id="updateOperator" parameterType="OperatorBean">
+        update lz_pf_user
+        <set>
+            <if test="telNum != null and telNum != ''">tel_num = #{telNum},</if>
+            <if test="userState != null and userState != ''">user_state = #{userState},</if>
+            <if test="role != null and role != ''">role = #{role},</if>
+            <if test="password != null and password != ''">password = #{password},</if>
+            <if test="isDelete != null and isDelete != ''">is_delete = #{isDelete}</if>
+        </set>
+        where user_id = #{userId}
+    </update>
+
+    <update id="updateOperatorById" parameterType="String">
+        update lz_pf_user
+        <set>
+            is_delete = '2'
+        </set>
+        where user_id = #{userId}
+    </update>
+
+</mapper>

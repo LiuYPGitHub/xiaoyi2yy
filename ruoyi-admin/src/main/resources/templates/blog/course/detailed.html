@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org">
+<head>
+	<th:block th:include="include :: header('课程详情')"/>
+	<th:block th:include="include :: jsonview-css"/>
+	<style type="text/css">
+		div#gray {
+			background: black;
+			opacity: 0.55;
+			filter: alpha(opacity=55);
+			position: absolute;
+			top: 0px;
+			left: 0px;
+		}
+	</style>
+</head>
+<body class="white-bg">
+<div class="wrapper wrapper-content animated fadeInRight ibox-content">
+	<form class="form-horizontal m-t" id="signupForm">
+		<div class="form-group">
+			<label class="col-sm-2 control-label">发布用户：</label>
+			<div class="col-sm-8">
+				<div th:if="${Course.createBy} == null">
+					<div class="form-control-static" th:text="无"></div>
+				</div>
+				<div class="form-control-static" th:text="${Course.createBy}"></div>
+			</div>
+		</div>
+		<div class="form-group">
+			<label class="col-sm-2 control-label">发布时间：</label>
+			<div class="form-control-static">
+				<div class="col-sm-8" style="line-height: 17px;" th:text="${#dates.format(Course.createTime,'yyyy-MM-dd HH:mm:ss')}"></div>
+			</div>
+		</div>
+		<div class="form-group">
+			<label class="col-sm-2 control-label">课程标题：</label>
+			<div class="col-sm-8">
+				<div class="form-control-static" th:text="${Course.coTitle}"></div>
+			</div>
+		</div>
+
+		<div class="form-group">
+			<label class="col-sm-2 control-label">活动Banner：</label>
+			<div class="col-sm-8">
+				<td><img th:src="${Course.imgUrl}" th:high="100" th:width="100" onclick="show(this)"/></td>
+			</div>
+		</div>
+
+<!--		<img th:src="${Course.imgUrl}" width="100 " height="100 " border="1 "-->
+<!--			 onmouseover="this.width = 300; this.height = 300; "-->
+<!--			 onmouseout="this.width = 100; this.height = 100; ">-->
+
+		<div class="form-group">
+			<label class="col-sm-2 control-label">课程类型：</label>
+			<div class="col-sm-8" th:if="${Course.coType} == 0">
+				<div class="form-control-static" th:text="直播"></div>
+			</div>
+			<div class="col-sm-8" th:if="${Course.coType} == 1">
+				<div class="form-control-static" th:text="录播"></div>
+			</div>
+		</div>
+		<div class="form-group">
+			<label class="col-sm-2 control-label">课程链接：</label>
+			<div class="form-control-static">
+				<div th:if="${Course.coLinkUrl} != null" target="_Top">
+					<a class="col-sm-8" style="line-height: 17px;" th:href="${Course.coLinkUrl}" target="_blank">点击跳转</a>
+				</div>
+				<div th:if="${Course.coLinkUrl} == null" target="_Top">
+					<div class="col-sm-8" style="line-height: 17px;" th:text="无"></div>
+				</div>
+			</div>
+		</div>
+
+		<div class="form-group">
+			<label class="col-sm-2 control-label">创建时间：</label>
+			<div class="col-sm-8">
+				<div th:if="${Course.createTime} == null">
+					<div class="form-control-static" th:text="无"></div>
+				</div>
+				<div style="line-height: 30px;" th:text="${#dates.format(Course.createTime,'yyyy-MM-dd HH:mm:ss')}"></div>
+			</div>
+		</div>
+
+		<div class="form-group">
+			<label class="col-sm-2 control-label">修改时间：</label>
+			<div class="col-sm-8">
+				<div th:if="${Course.updateTime} == null">
+					<div class="form-control-static" th:text="无"></div>
+				</div>
+				<div style="line-height: 30px;" th:text="${#dates.format(Course.updateTime,'yyyy-MM-dd HH:mm:ss')}"></div>
+			</div>
+		</div>
+	</form>
+</div>
+<th:block th:include="include :: footer"/>
+<th:block th:include="include :: jsonview-js"/>
+<script th:inline="javascript">
+	function show(pic) {
+		iw = pic.width;
+		ih = pic.height;
+		sw = document.documentElement.clientWidth;
+		sh = document.documentElement.clientHeight;
+		gdiv = document.createElement('div');
+		gdiv.id = 'gray';
+		gdiv.style.height = sh + 'px';
+		gdiv.style.width = sw + 'px';
+		document.body.appendChild(gdiv);
+		gdiv.onclick = function () {
+			document.body.removeChild(this);
+			document.body.removeChild(oimg);
+		}
+		oimg = document.createElement('img');
+		oimg.src = pic.src;
+		oimg.width = 400;
+		oimg.height = 400;
+		oimg.style.position = 'absolute';
+		oimg.style.top = (sh - ih) / 6 + 'px';
+		oimg.style.left = (sw - ih) / 4 + 'px';
+		document.body.appendChild(oimg);
+	}
+	window.onresize = function () {
+		sh = document.documentElement.clientHeight;
+		sw = document.documentElement.clientWidth;
+		gdiv.style.width = sw + 'px';
+		gdiv.style.height = sh + 'px';
+		//更改图片的位置
+		oimg.style.top = (sh - ih) / 3 + 'px';
+		oimg.style.left = (sw - iw) / 3 + 'px';
+	}
+</script>
+</body>
+</html>

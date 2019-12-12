@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <th:block th:include="include :: header('动态详情')"/>
+    <th:block th:include="include :: jsonview-css"/>
+    <style type="text/css">
+        div#gray {
+            background: black;
+            opacity: 0.55;
+            filter: alpha(opacity=55);
+            position: absolute;
+            top: 0px;
+            left: 0px;
+        }
+    </style>
+</head>
+
+<body class="white-bg">
+<div class="wrapper wrapper-content animated fadeInRight ibox-content">
+    <form class="form-horizontal m-t" id="signupForm">
+        <div class="form-group">
+            <label class="col-sm-2 control-label">发布用户：</label>
+            <div class="col-sm-8">
+<!--                <div class="form-control-static" th:text="${dynamic.createBy}"></div>-->
+
+                <div th:if="${dynamic.createBy} != null">
+                    <div class="form-control-static" th:text="${dynamic.createBy}"></div>
+                </div>
+                <div th:if="${dynamic.createBy} == null">
+                    <div class="form-control-static" th:text="无"></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="col-sm-2 control-label">发布用户身份：</label>
+            <div class="col-sm-8">
+                <div th:if="${dynamic.userType} == null">
+                    <div class="form-control-static" th:text="无"></div>
+                </div>
+            <div th:if="${dynamic.userType} == 1">
+                <div class="form-control-static" style="line-height: 17px;" th:text="KOL"></div>
+            </div>
+            <div th:if="${dynamic.userType} == 2">
+                <div class="form-control-static" style="line-height: 17px;" th:text="名师"></div>
+            </div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="col-sm-2 control-label">发布时间：</label>
+            <div class="form-control-static">
+                <div class="col-sm-8" style="line-height: 17px;" th:text="${#dates.format(dynamic.createTime,'yyyy-MM-dd HH:mm:ss')}"></div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="col-sm-2 control-label">动态内容：</label>
+            <div class="col-sm-8">
+                <div th:if="${dynamic.dynaContent} == null">
+                    <div class="form-control-static" th:text="无"></div>
+                </div>
+                <div th:if="${dynamic.dynaContent} != null">
+                    <div class="form-control-static" style="line-height: 17px;" th:text="${dynamic.dynaContent}"></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="col-sm-2 control-label">动态图片：</label>
+            <div class="col-sm-8" style="width:600px">
+                <tr th:each="img : ${dynamic.dynaImgs}">
+                    <!--                    <img th:src="${img.img_url}" width= "100 " height= "100 " border= "1 " onmouseover= "this.width = 300; this.height = 300; " onmouseout="this.width = 100; this.height = 100; ">-->
+                    <td><img th:src="${img.img_url}" id="img" name="img" th:high="100" th:width="100" onclick="show(this)"/></td>
+                </tr>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="col-sm-2 control-label">创建时间：</label>
+            <div class="col-sm-8">
+                <div th:if="${dynamic.createTime} == null">
+                    <div class="form-control-static" th:text="无"></div>
+                </div>
+                <div style="line-height: 30px;" th:text="${#dates.format(dynamic.createTime,'yyyy-MM-dd HH:mm:ss')}"></div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="col-sm-2 control-label">修改时间：</label>
+            <div class="col-sm-8">
+                <div th:if="${dynamic.updateTime} == null">
+                    <div class="form-control-static" th:text="无"></div>
+                </div>
+                <div style="line-height: 30px;" th:text="${#dates.format(dynamic.updateTime,'yyyy-MM-dd HH:mm:ss')}"></div>
+            </div>
+        </div>
+    </form>
+</div>
+<th:block th:include="include :: footer"/>
+<th:block th:include="include :: jsonview-js"/>
+
+<script th:inline="javascript">
+
+    // 鼠标one 悬浮
+    // $(function(){
+    //     var obj = document.getElementById("img");
+    //     var img = obj.src;
+    //     $('#img').click(function(){
+    //         console.log("图片:"+img);
+    //         $.table.imageView(img,600, 600);
+    //     });
+    // });
+
+    function show(pic) {
+        iw = pic.width;
+        ih = pic.height;
+        sw = document.documentElement.clientWidth;
+        sh = document.documentElement.clientHeight;
+        gdiv = document.createElement('div');
+        gdiv.id = 'gray';
+        gdiv.style.height = sh + 'px';
+        gdiv.style.width = sw + 'px';
+        document.body.appendChild(gdiv);
+        gdiv.onclick = function () {
+            document.body.removeChild(this);
+            document.body.removeChild(oimg);
+        }
+        oimg = document.createElement('img');
+        oimg.src = pic.src;
+        oimg.width = 400;
+        oimg.height = 400;
+        oimg.style.position = 'absolute';
+        oimg.style.top = (sh - ih) / 6 + 'px';
+        oimg.style.left = (sw - ih) / 4 + 'px';
+        document.body.appendChild(oimg);
+    }
+    window.onresize = function () {
+        sh = document.documentElement.clientHeight;
+        sw = document.documentElement.clientWidth;
+        gdiv.style.width = sw + 'px';
+        gdiv.style.height = sh + 'px';
+        oimg.style.top = (sh - ih) / 3 + 'px';
+        oimg.style.left = (sw - iw) / 3 + 'px';
+    }
+</script>
+</body>
+</html>

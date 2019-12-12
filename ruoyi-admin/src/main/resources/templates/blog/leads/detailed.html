@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <th:block th:include="include :: header('LEADS库')"/>
+    <th:block th:include="include :: jsonview-css"/>
+</head>
+<body class="white-bg">
+<div class="wrapper wrapper-content animated fadeInRight ibox-content">
+    <form class="form-horizontal m-t" id="signupForm">
+        <div class="form-group">
+            <label class="col-sm-2 control-label">家长姓名：</label>
+            <div class="col-sm-8">
+                <div class="form-control-static" th:text="${Leads.leParName}"></div>
+                <div th:if="${Leads.leParName} == null">
+                    <div class="form-control-static" style="line-height: 17px;" th:text="无"></div>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-2 control-label">家长电话：</label>
+            <div class="col-sm-8">
+                <div class="form-control-static" th:text="${Leads.leParPhone}"></div>
+                <div th:if="${Leads.leParPhone} == null">
+                    <div class="form-control-static" style="line-height: 17px;" th:text="无"></div>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-2 control-label">孩子姓名：</label>
+            <div class="col-sm-8">
+                <div class="form-control-static" th:text="${Leads.leChiName} "></div>
+                <div th:if="${Leads.leChiName} == null">
+                    <div class="form-control-static" style="line-height: 17px;" th:text="无"></div>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-2 control-label">孩子年龄：</label>
+            <div class="col-sm-8">
+                <div class="form-control-static" th:text="${Leads.leChiAge} "></div>
+                <div th:if="${Leads.leChiAge} == null">
+                    <div class="form-control-static" style="line-height: 17px;" th:text="无"></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="col-sm-2 control-label">孩子性别：</label>
+            <div class="col-sm-8">
+                <div th:if="${Leads.leChiGen} == 0">
+                    <div class="form-control-static" th:text="男"></div>
+                </div>
+                <div th:if="${Leads.leChiGen} == 1">
+                    <div class="form-control-static" th:text="女"></div>
+                </div>
+                <div th:if="${Leads.leChiGen} == null">
+                    <div class="form-control-static" style="line-height: 17px;" th:text="无"></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="col-sm-2 control-label">就读年级：</label>
+            <div class="col-sm-8">
+                <div th:if="${Leads.grade} == 0">
+                    <div class="form-control-static" th:text="一年级"></div>
+                </div>
+                <div th:if="${Leads.grade} == 1">
+                    <div class="form-control-static" th:text="二年级"></div>
+                </div>
+                <div th:if="${Leads.grade} == 2">
+                    <div class="form-control-static" th:text="三年级"></div>
+                </div>
+                <div th:if="${Leads.grade} == 3">
+                    <div class="form-control-static" th:text="四年级"></div>
+                </div>
+                <div th:if="${Leads.grade} == 4">
+                    <div class="form-control-static" th:text="五年级"></div>
+                </div>
+                <div th:if="${Leads.grade} == 5">
+                    <div class="form-control-static" th:text="六年级"></div>
+                </div>
+                <div th:if="${Leads.grade} == 6">
+                    <div class="form-control-static" th:text="初一"></div>
+                </div>
+                <div th:if="${Leads.grade} == 7">
+                    <div class="form-control-static" th:text="初二"></div>
+                </div>
+                <div th:if="${Leads.grade} == 8">
+                    <div class="form-control-static" th:text="初三"></div>
+                </div>
+                <div th:if="${Leads.grade} == 9">
+                    <div class="form-control-static" th:text="高一"></div>
+                </div>
+                <div th:if="${Leads.grade} == 10">
+                    <div class="form-control-static" th:text="高二"></div>
+                </div>
+                <div th:if="${Leads.grade} == 11">
+                    <div class="form-control-static" th:text="高三"></div>
+                </div>
+                <div th:if="${Leads.grade} == 12">
+                    <div class="form-control-static" th:text="幼儿园小班"></div>
+                </div>
+                <div th:if="${Leads.grade} == 13">
+                    <div class="form-control-static" th:text="幼儿园中班"></div>
+                </div>
+                <div th:if="${Leads.grade} == 14">
+                    <div class="form-control-static" th:text="幼儿园大班"></div>
+                </div>
+                <div th:if="${Leads.grade} == null">
+                    <div class="form-control-static" style="line-height: 17px;" th:text="无"></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="col-sm-2 control-label">城市：</label>
+            <div class="col-sm-8">
+                <div th:if="${Leads.city} == null">
+                    <div class="form-control-static" style="line-height: 17px;" th:text="无"></div>
+                </div>
+                <div th:if="${Leads.city} != null">
+                    <div class="form-control-static" style="line-height: 17px;" th:text="${Leads.city}"></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="col-sm-2 control-label">导入城市：</label>
+            <div class="col-sm-8">
+                <div th:if="${Leads.cityInput} == null">
+                    <div class="form-control-static" style="line-height: 17px;" th:text="无"></div>
+                </div>
+                <div th:if="${Leads.cityInput} != null">
+                    <div class="form-control-static" style="line-height: 17px;" th:text="${Leads.cityInput}"></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="col-sm-2 control-label">就读学校：</label>
+            <div class="col-sm-8">
+                <div th:if="${Leads.leSchool} == null">
+                    <div class="form-control-static" style="line-height: 17px;" th:text="无"></div>
+                </div>
+                <div th:if="${Leads.leSchool} != null">
+                    <div class="form-control-static" style="line-height: 17px;" th:text="${Leads.leSchool}"></div>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-2 control-label">意向课程：</label>
+            <div class="col-sm-8">
+                <div class="form-control-static" th:text="${Leads.leIntenType}"></div>
+                <div th:if="${Leads.leIntenType} == null">
+                    <div class="form-control-static" style="line-height: 17px;" th:text="无"></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="col-sm-2 control-label">创建时间：</label>
+            <div class="col-sm-8">
+                <div th:if="${Leads.createTime} == null">
+                    <div class="form-control-static" th:text="无"></div>
+                </div>
+                <div style="line-height: 30px;" th:text="${#dates.format(Leads.createTime,'yyyy-MM-dd HH:mm:ss')}"></div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="col-sm-2 control-label">修改时间：</label>
+            <div class="col-sm-8">
+                <div th:if="${Leads.updateTime} == null">
+                    <div class="form-control-static" th:text="无"></div>
+                </div>
+                <div style="line-height: 30px;" th:text="${#dates.format(Leads.updateTime,'yyyy-MM-dd HH:mm:ss')}"></div>
+            </div>
+        </div>
+    </form>
+</div>
+<th:block th:include="include :: footer"/>
+<th:block th:include="include :: jsonview-js"/>
+<script th:inline="javascript">
+
+</script>
+</body>
+</html>

@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.web.controller.xiaoyi.dao.OrgPolyWeiMapper">
+
+    <resultMap id="orgPolyWeiMap" type="com.ruoyi.web.controller.xiaoyi.domain.OrgPolyWei">
+        <id property="id" column="id"></id>
+        <result property="orgId" column="org_id"></result>
+        <result property="orgName" column="org_name"></result>
+        <result property="channelId" column="channel_id"></result>
+        <result property="cataId" column="cata_id"></result>
+        <result property="isDel" column="is_del"></result>
+        <result property="isFlag" column="is_flag"></result>
+        <result property="createTime" column="create_time"></result>
+    </resultMap>
+
+    <select id="selectList" resultMap="orgPolyWeiMap">
+        SELECT * FROM `ty_orgs`
+        <trim prefix="where" prefixOverrides="and | or">
+            <if test="orgId != null">
+               and org_id like concat('%', #{orgId}, '%')
+            </if>
+            <if test="orgName != null">
+                and org_name like concat('%', #{orgName}, '%')
+            </if>
+            <if test="channelId != null">
+                and channel_id like concat('%', #{channelId}, '%')
+            </if>
+            <if test="cataId != null">
+                and cata_id like concat('%', #{cataId}, '%')
+            </if>
+            and is_del=1 AND is_flag=1
+        </trim>
+    </select>
+
+    <select id="selectById" resultMap="orgPolyWeiMap">
+        SELECT * FROM `ty_orgs`
+        WHERE is_del=1 AND is_flag=1 and id=#{id}
+    </select>
+
+    <resultMap id="queryAllMap" type="com.ruoyi.web.controller.xiaoyi.bean.OrgPolyWeiBean">
+        <result property="orgId" column="org_id"></result>
+        <result property="orgName" column="real_name"></result>
+    </resultMap>
+
+    <select id="queryAll" resultMap="queryAllMap">
+        SELECT org_id,org_name real_name FROM `lz_pf_cooperation`
+    </select>
+
+    <update id="updateById" parameterType="java.lang.Integer">
+        update `ty_orgs`
+        <trim prefix="set">
+            <if test="status == 1">
+                channel_id=''
+            </if>
+            <if test="status == 2">
+                cata_id=''
+            </if>
+            <if test="status == 3">
+                channel_id='',cata_id=''
+            </if>
+        </trim>
+        where id=#{id}
+    </update>
+
+    <update id="update" parameterType="com.ruoyi.web.controller.xiaoyi.domain.OrgPolyWei">
+        update `ty_orgs`
+        <trim prefix="set" prefixOverrides="," suffixOverrides=",">
+            <if test="channelId != null and channelId !='' ">
+                channel_id=#{channelId},
+            </if>
+            <if test="cataId != null and cataId !='' ">
+                cata_id=#{cataId},
+            </if>
+            <if test="orgId != null and orgId !='' ">
+                org_id=#{orgId},
+            </if>
+            <if test="orgName != null and orgName !='' ">
+                org_name=#{orgName},
+            </if>
+        </trim>
+        where id=#{id}
+    </update>
+
+    <insert id="insertOrgPolyWei" parameterType="com.ruoyi.web.controller.xiaoyi.domain.OrgPolyWei">
+        INSERT INTO ty_orgs (`org_id`,`org_name`,`channel_id`,`cata_id`)
+        VALUES (#{orgId},#{orgName},#{channelId},#{cataId})
+    </insert>
+
+</mapper>

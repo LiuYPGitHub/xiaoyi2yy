@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <th:block th:include="include :: header('修改用户')"/>
+    <th:block th:include="include :: select2-css"/>
+</head>
+<body>
+<div class="main-content">
+    <form class="form-horizontal" id="form-org-edit" th:object="${org}">
+        <input name="orgId" type="hidden" th:field="*{orgId}"/>
+        <h4 class="form-header h4">机构信息</h4>
+        <div class="row">
+            <div class="col-sm-6">
+                <div class="form-group">
+                    <label class="col-sm-4 control-label"><span style="color: red; ">*</span>机构名称：</label>
+                    <div class="col-sm-8">
+                        <input name="orgName" placeholder="请输入机构名称" class="form-control" type="text" maxlength="30"
+                               th:field="*{orgName}" required>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-sm-6">
+                <div class="form-group">
+                    <label class="col-sm-4 control-label"><span style="color: red; ">*</span>联系人：</label>
+                    <div class="col-sm-8">
+                        <input name="contacts" class="form-control" type="text" maxlength="30" th:field="*{contacts}"
+                               required>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-6">
+                <div class="form-group">
+                    <label class="col-sm-4 control-label"><span style="color: red; ">*</span>机构照片：</label>
+                    <div class="col-sm-8">
+                        <input type="file" multiple name="headImgUrl" th:field="*{headImgUrl}" required>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-6">
+                <div class="form-group">
+                    <label class="col-sm-4 control-label"><span style="color: red; ">*</span>联系人电话：</label>
+                    <div class="col-sm-8">
+                        <input name="phone" placeholder="请输入联系人电话" type="text" class="form-control"
+                               th:field="*{phone}" maxlength="11" required>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-6">
+                <div class="form-group">
+                    <label class="col-sm-4 control-label"><span style="color: red; ">*</span>校区：</label>
+                    <div class="col-sm-8">
+                        <input name="campus" placeholder="请输入校区" type="text" class="form-control" maxlength="128"
+                               th:field="*{campus}" required>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-6">
+                <div class="form-group">
+                    <label class="col-sm-4 control-label"><span style="color: red; ">*</span>地址：</label>
+                    <div class="col-sm-8">
+                        <input name="address" placeholder="请输入地址" type="text" class="form-control"
+                               th:field="*{address}" required>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-6">
+                <div class="form-group">
+                    <label class="col-sm-4 control-label">机构描述：</label>
+                    <div class="col-sm-8">
+                            <textarea name="info" class="form-control" th:field="*{info}">
+                            </textarea>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-6">
+                <div class="form-group">
+                    <label class="col-sm-4 control-label">是否启用：</label>
+                    <div class="col-sm-8">
+                        <label class="toggle-switch switch-solid">
+                            <input type="checkbox" id="userState" th:checked="${org.userState == '1' ? true : false}">
+                            <span></span>
+                        </label>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+<div class="row">
+    <div class="col-sm-offset-5 col-sm-10">
+        <button type="button" class="btn btn-sm btn-primary" onclick="submitHandler()"><i class="fa fa-check"></i>保 存
+        </button>&nbsp;
+        <button type="button" class="btn btn-sm btn-danger" onclick="closeItem()"><i class="fa fa-reply-all"></i>关 闭
+        </button>
+    </div>
+</div>
+<th:block th:include="include :: footer"/>
+<th:block th:include="include :: select2-js"/>
+<script type="text/javascript">
+    var prefix = ctx + "manager/org";
+
+    $("#form-org-edit").validate({
+        onkeyup: false,
+        rules: {
+            phone: {
+                maxlength: 11,
+                required: true
+            },
+            orgName: {
+                required: true
+            }
+        },
+        messages: {
+            phone: {
+                required: "账号不能为空",
+                maxlength: "手机号为11位"
+
+            },
+            orgName: {
+                required: "机构不能为空"
+            }
+        },
+        focusCleanup: true
+    });
+
+    function submitHandler() {
+        if ($.validate.form()) {
+            var data = $("#form-org-edit").serializeArray();
+            var status = $("input[id='userState']").is(':checked') == true ? 1 : 2;
+            data.push({"name": "userState", "value": status});
+            $.operate.saveTab(prefix + "/editOrg", data);
+        }
+    }
+
+</script>
+</body>
+</html>

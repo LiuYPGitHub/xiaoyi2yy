@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" >
+<head>
+    <th:block th:include="include :: header('销售报表')" />
+</head>
+<body class="white-bg">
+<div class="wrapper wrapper-content animated fadeInRight ibox-content">
+    <ul style="margin: 0px auto;">
+        <li style="margin:10px 10px 10px 90px;float: left;list-style: none;width: 368px;height: 146px;border: 1px solid #8897aa;border-radius:5px;box-shadow: 5px 5px 5px #888888;">
+            <p style="font-size: 18px;;float: left;height:30px;line-height:30px;vertical-align: middle;margin-left: 20px;margin-top: 30px;">
+                <span style="color: #6b78de;">本月 </span>销售金额
+                   <a href="/report/clas" data-index="2">
+                       <img style="vertical-align: middle;" data-v-199337cc="" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABMAAAASCAYAAAC5DOVpAAACVElEQVQ4T42US0hUYRTH//87r1TIKc2hGYMSaVc7F9oE2aZFGCgMiIiLFmHNhNU80hCaFmn5AktbtItekEWLWueipMey1kGgc3NGoywmqbn3nrijTvO4o37Lc/7n9/2/wzkfYXHOhNVaB40eUmkD5RAENSC+QfiJNF7+0ZV7d8e9y8WlzA/E46Isp9UIgAEAbquL1mM/AAzXVnnH4nEaG7ocLBAQm+dA4gmEHZtAClICPE998QZmZqibiRwsFEvchiC0XdCGToDp6VFfti4LC0W+HgON2XKgwagHpGBoYgm6JiUyg3L8zkj9bBYWjCVeU+AvB+sKuNHcVInFlI6bt1LQ/hYChXgzPeI7yt6L8z6bXZln3pOtoB2n3Gj1V0JNahibXEImz6EAomvGPoYiajco97fTqyPNVehsr7Z0KGQPQ1G1H5BhE3byxE54PHagtC3QMoL0qqClqQJOJ5FY1HBjIpXngQMMRhYukRw3o+PX98LpKBi90mYbAkVZ05yPqbm8iIQZjCQ6STw2o64dCtzVCsTC2c9fBg42unC6yw2bjXj4dAXvPqRzMAJdPNu/2GDT9c9b9czhIgbDddjttuHRsxW8ff8ftDZjeuPGaMxR0FIO2NjgQl9vTTZd7Gi9Zm5q1OfPws7FFloV4atysMsX6lDvtVs6MmsKhjY7uNHEFIHgVs8tzpeskykwF71uvzpDoH27wLKLbgLML2jptxql4CqAik2gq0Jc21PpHbX8gvIL+64kPYaW6RZR2gRymMAuAb4T/EgaLxS748HkkCdZfNk/0ZDniYBF4agAAAAASUVORK5CYII=" class="d-inline-block">
+                   </a>
+            </p>
+            <div style="clear:left;float: left;font-size: 15px;margin-left: 20px;">
+                <p>直播课:<span th:if="${order.thisMonthMoney_live !=null}">[[${order.thisMonthMoney_live}]] 元</span>
+                    <span th:if="${order.thisMonthMoney_live == null}">0 元</span></p>
+                <p>录播课:<span th:if="${order.thisMonthMoney_recording !=null}">[[${order.thisMonthMoney_recording}]] 元</span>
+                    <span th:if="${order.thisMonthMoney_recording == null}">0 元</span></p>
+            </div>
+            <p style="float: right;margin-top: -69px;margin-right: 1px;">
+                <img src="/img/quan.png">
+            </p>
+        </li>
+
+        <li style="margin:10px 10px 10px 90px;float: left;list-style: none;width: 368px;height: 146px;border: 1px solid #8897aa;border-radius:5px;box-shadow: 5px 5px 5px #888888;">
+            <p style="font-size: 18px;;float: left;height:30px;line-height:30px;vertical-align: middle;margin-left: 20px;margin-top: 30px;">
+                <span style="color: #6b78de;">本月 </span>销售金额
+                <a href="/report/clas" data-index="2">
+                    <img style="vertical-align: middle;" data-v-199337cc="" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABMAAAASCAYAAAC5DOVpAAACVElEQVQ4T42US0hUYRTH//87r1TIKc2hGYMSaVc7F9oE2aZFGCgMiIiLFmHNhNU80hCaFmn5AktbtItekEWLWueipMey1kGgc3NGoywmqbn3nrijTvO4o37Lc/7n9/2/wzkfYXHOhNVaB40eUmkD5RAENSC+QfiJNF7+0ZV7d8e9y8WlzA/E46Isp9UIgAEAbquL1mM/AAzXVnnH4nEaG7ocLBAQm+dA4gmEHZtAClICPE998QZmZqibiRwsFEvchiC0XdCGToDp6VFfti4LC0W+HgON2XKgwagHpGBoYgm6JiUyg3L8zkj9bBYWjCVeU+AvB+sKuNHcVInFlI6bt1LQ/hYChXgzPeI7yt6L8z6bXZln3pOtoB2n3Gj1V0JNahibXEImz6EAomvGPoYiajco97fTqyPNVehsr7Z0KGQPQ1G1H5BhE3byxE54PHagtC3QMoL0qqClqQJOJ5FY1HBjIpXngQMMRhYukRw3o+PX98LpKBi90mYbAkVZ05yPqbm8iIQZjCQ6STw2o64dCtzVCsTC2c9fBg42unC6yw2bjXj4dAXvPqRzMAJdPNu/2GDT9c9b9czhIgbDddjttuHRsxW8ff8ftDZjeuPGaMxR0FIO2NjgQl9vTTZd7Gi9Zm5q1OfPws7FFloV4atysMsX6lDvtVs6MmsKhjY7uNHEFIHgVs8tzpeskykwF71uvzpDoH27wLKLbgLML2jptxql4CqAik2gq0Jc21PpHbX8gvIL+64kPYaW6RZR2gRymMAuAb4T/EgaLxS748HkkCdZfNk/0ZDniYBF4agAAAAASUVORK5CYII=" class="d-inline-block">
+                </a>
+            </p>
+            <div style="clear:left;float: left;font-size: 15px;margin-left: 20px;">
+                <p>直播课:<span th:if="${order.thisAllMonthRecording_live !=null}">[[${order.thisAllMonthRecording_live}]] 元</span>
+                    <span th:if="${order.thisAllMonthRecording_live == null}">0 元</span></p>
+                <p>录播课:<span th:if="${order.thisAllMonthRecording_recording !=null}">[[${order.thisAllMonthRecording_recording}]] 元</span>
+                    <span th:if="${order.thisAllMonthRecording_recording == null}">0 元</span></p>
+            </div>
+            <p style="float: right;margin-top: -70px;margin-right: 1px;">
+                <img src="/img/ji.png">
+            </p>
+        </li>
+
+        <li style="margin:10px 10px 10px 90px;float: left;list-style: none;width: 368px;height: 146px;border: 1px solid #8897aa;border-radius:5px;box-shadow: 5px 5px 5px #888888;">
+            <p style="font-size: 18px;;float: left;height:30px;line-height:30px;vertical-align: middle;margin-left: 20px;margin-top: 30px;">
+                <span style="color: #6b78de;">本月 </span>销售金额
+                <a href="/report/clas" data-index="2">
+                    <img style="vertical-align: middle;" data-v-199337cc="" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABMAAAASCAYAAAC5DOVpAAACVElEQVQ4T42US0hUYRTH//87r1TIKc2hGYMSaVc7F9oE2aZFGCgMiIiLFmHNhNU80hCaFmn5AktbtItekEWLWueipMey1kGgc3NGoywmqbn3nrijTvO4o37Lc/7n9/2/wzkfYXHOhNVaB40eUmkD5RAENSC+QfiJNF7+0ZV7d8e9y8WlzA/E46Isp9UIgAEAbquL1mM/AAzXVnnH4nEaG7ocLBAQm+dA4gmEHZtAClICPE998QZmZqibiRwsFEvchiC0XdCGToDp6VFfti4LC0W+HgON2XKgwagHpGBoYgm6JiUyg3L8zkj9bBYWjCVeU+AvB+sKuNHcVInFlI6bt1LQ/hYChXgzPeI7yt6L8z6bXZln3pOtoB2n3Gj1V0JNahibXEImz6EAomvGPoYiajco97fTqyPNVehsr7Z0KGQPQ1G1H5BhE3byxE54PHagtC3QMoL0qqClqQJOJ5FY1HBjIpXngQMMRhYukRw3o+PX98LpKBi90mYbAkVZ05yPqbm8iIQZjCQ6STw2o64dCtzVCsTC2c9fBg42unC6yw2bjXj4dAXvPqRzMAJdPNu/2GDT9c9b9czhIgbDddjttuHRsxW8ff8ftDZjeuPGaMxR0FIO2NjgQl9vTTZd7Gi9Zm5q1OfPws7FFloV4atysMsX6lDvtVs6MmsKhjY7uNHEFIHgVs8tzpeskykwF71uvzpDoH27wLKLbgLML2jptxql4CqAik2gq0Jc21PpHbX8gvIL+64kPYaW6RZR2gRymMAuAb4T/EgaLxS748HkkCdZfNk/0ZDniYBF4agAAAAASUVORK5CYII=" class="d-inline-block">
+                </a>
+            </p>
+            <div style="clear:left;float: left;font-size: 15px;margin-left: 20px;">
+                <p>直播课:<span th:if="${order.thisAllTianYiMonthRecording_live !=null}">[[${order.thisAllTianYiMonthRecording_live}]] 元</span>
+                    <span th:if="${order.thisAllTianYiMonthRecording_live == null}">0 元</span></p>
+                <p>录播课:<span th:if="${order.thisAllTianYiMonthRecording_recording !=null}">[[${order.thisAllTianYiMonthRecording_recording}]] 元</span>
+                    <span th:if="${order.thisAllTianYiMonthRecording_recording == null}">0 元</span></p>
+            </div>
+            <p style="float: right;margin-top: -69px;margin-right: 1px;">
+                <img src="/img/tian.png">
+            </p>
+        </li>
+    </ul>
+
+    <ul style="margin: 0px auto;">
+        <li style="margin:10px 10px 10px 90px;float: left;list-style: none;width: 368px;height: 146px;border: 1px solid #8897aa;border-radius:5px;box-shadow: 5px 5px 5px #888888;">
+            <p style="font-size: 18px;;float: left;height:30px;line-height:30px;vertical-align: middle;margin-left: 20px;margin-top: 30px;">
+                <span style="color: #6b78de;">上月 </span>销售金额
+                <a href="/report/clas" data-index="2">
+                    <img style="vertical-align: middle;" data-v-199337cc="" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABMAAAASCAYAAAC5DOVpAAACVElEQVQ4T42US0hUYRTH//87r1TIKc2hGYMSaVc7F9oE2aZFGCgMiIiLFmHNhNU80hCaFmn5AktbtItekEWLWueipMey1kGgc3NGoywmqbn3nrijTvO4o37Lc/7n9/2/wzkfYXHOhNVaB40eUmkD5RAENSC+QfiJNF7+0ZV7d8e9y8WlzA/E46Isp9UIgAEAbquL1mM/AAzXVnnH4nEaG7ocLBAQm+dA4gmEHZtAClICPE998QZmZqibiRwsFEvchiC0XdCGToDp6VFfti4LC0W+HgON2XKgwagHpGBoYgm6JiUyg3L8zkj9bBYWjCVeU+AvB+sKuNHcVInFlI6bt1LQ/hYChXgzPeI7yt6L8z6bXZln3pOtoB2n3Gj1V0JNahibXEImz6EAomvGPoYiajco97fTqyPNVehsr7Z0KGQPQ1G1H5BhE3byxE54PHagtC3QMoL0qqClqQJOJ5FY1HBjIpXngQMMRhYukRw3o+PX98LpKBi90mYbAkVZ05yPqbm8iIQZjCQ6STw2o64dCtzVCsTC2c9fBg42unC6yw2bjXj4dAXvPqRzMAJdPNu/2GDT9c9b9czhIgbDddjttuHRsxW8ff8ftDZjeuPGaMxR0FIO2NjgQl9vTTZd7Gi9Zm5q1OfPws7FFloV4atysMsX6lDvtVs6MmsKhjY7uNHEFIHgVs8tzpeskykwF71uvzpDoH27wLKLbgLML2jptxql4CqAik2gq0Jc21PpHbX8gvIL+64kPYaW6RZR2gRymMAuAb4T/EgaLxS748HkkCdZfNk/0ZDniYBF4agAAAAASUVORK5CYII=" class="d-inline-block">
+                </a>
+            </p>
+            <div style="clear:left;float: left;font-size: 15px;margin-left: 20px;">
+                <p>直播课:<span th:if="${order.lastMonthMoney_live !=null}">[[${order.lastMonthMoney_live}]] 元</span>
+                    <span th:if="${order.lastMonthMoney_live == null}">0 元</span></p>
+                <p>录播课:<span th:if="${order.lastMonthMoney_recording !=null}">[[${order.lastMonthMoney_recording}]] 元</span>
+                    <span th:if="${order.lastMonthMoney_recording == null}">0 元</span></p>
+            </div>
+            <p style="float: right;margin-top: -69px;margin-right: 1px;">
+                <img src="/img/quan.png">
+            </p>
+        </li>
+
+        <li style="margin:10px 10px 10px 90px;float: left;list-style: none;width: 368px;height: 146px;border: 1px solid #8897aa;border-radius:5px;box-shadow: 5px 5px 5px #888888;">
+            <p style="font-size: 18px;;float: left;height:30px;line-height:30px;vertical-align: middle;margin-left: 20px;margin-top: 30px;">
+                <span style="color: #6b78de;">上月 </span>销售金额
+                <a href="/report/clas" data-index="2">
+                    <img style="vertical-align: middle;" data-v-199337cc="" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABMAAAASCAYAAAC5DOVpAAACVElEQVQ4T42US0hUYRTH//87r1TIKc2hGYMSaVc7F9oE2aZFGCgMiIiLFmHNhNU80hCaFmn5AktbtItekEWLWueipMey1kGgc3NGoywmqbn3nrijTvO4o37Lc/7n9/2/wzkfYXHOhNVaB40eUmkD5RAENSC+QfiJNF7+0ZV7d8e9y8WlzA/E46Isp9UIgAEAbquL1mM/AAzXVnnH4nEaG7ocLBAQm+dA4gmEHZtAClICPE998QZmZqibiRwsFEvchiC0XdCGToDp6VFfti4LC0W+HgON2XKgwagHpGBoYgm6JiUyg3L8zkj9bBYWjCVeU+AvB+sKuNHcVInFlI6bt1LQ/hYChXgzPeI7yt6L8z6bXZln3pOtoB2n3Gj1V0JNahibXEImz6EAomvGPoYiajco97fTqyPNVehsr7Z0KGQPQ1G1H5BhE3byxE54PHagtC3QMoL0qqClqQJOJ5FY1HBjIpXngQMMRhYukRw3o+PX98LpKBi90mYbAkVZ05yPqbm8iIQZjCQ6STw2o64dCtzVCsTC2c9fBg42unC6yw2bjXj4dAXvPqRzMAJdPNu/2GDT9c9b9czhIgbDddjttuHRsxW8ff8ftDZjeuPGaMxR0FIO2NjgQl9vTTZd7Gi9Zm5q1OfPws7FFloV4atysMsX6lDvtVs6MmsKhjY7uNHEFIHgVs8tzpeskykwF71uvzpDoH27wLKLbgLML2jptxql4CqAik2gq0Jc21PpHbX8gvIL+64kPYaW6RZR2gRymMAuAb4T/EgaLxS748HkkCdZfNk/0ZDniYBF4agAAAAASUVORK5CYII=" class="d-inline-block">
+                </a>
+            </p>
+            <div style="clear:left;float: left;font-size: 15px;margin-left: 20px;">
+                <p>直播课:<span th:if="${order.lastAllMonthRecording_live !=null}">[[${order.lastAllMonthRecording_live}]] 元</span>
+                    <span th:if="${order.lastAllMonthRecording_live == null}">0 元</span></p>
+                <p>录播课:<span th:if="${order.lastAllMonthRecording_recording !=null}">[[${order.lastAllMonthRecording_recording}]] 元</span>
+                    <span th:if="${order.lastAllMonthRecording_recording == null}">0 元</span></p>
+            </div>
+            <p style="float: right;margin-top: -70px;margin-right: 1px;">
+                <img src="/img/ji.png">
+            </p>
+        </li>
+
+        <li style="margin:10px 10px 10px 90px;float: left;list-style: none;width: 368px;height: 146px;border: 1px solid #8897aa;border-radius:5px;box-shadow: 5px 5px 5px #888888;">
+            <p style="font-size: 18px;;float: left;height:30px;line-height:30px;vertical-align: middle;margin-left: 20px;margin-top: 30px;">
+                <span style="color: #6b78de;">上月 </span>销售金额
+                <a href="/report/clas" data-index="2">
+                    <img style="vertical-align: middle;" data-v-199337cc="" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABMAAAASCAYAAAC5DOVpAAACVElEQVQ4T42US0hUYRTH//87r1TIKc2hGYMSaVc7F9oE2aZFGCgMiIiLFmHNhNU80hCaFmn5AktbtItekEWLWueipMey1kGgc3NGoywmqbn3nrijTvO4o37Lc/7n9/2/wzkfYXHOhNVaB40eUmkD5RAENSC+QfiJNF7+0ZV7d8e9y8WlzA/E46Isp9UIgAEAbquL1mM/AAzXVnnH4nEaG7ocLBAQm+dA4gmEHZtAClICPE998QZmZqibiRwsFEvchiC0XdCGToDp6VFfti4LC0W+HgON2XKgwagHpGBoYgm6JiUyg3L8zkj9bBYWjCVeU+AvB+sKuNHcVInFlI6bt1LQ/hYChXgzPeI7yt6L8z6bXZln3pOtoB2n3Gj1V0JNahibXEImz6EAomvGPoYiajco97fTqyPNVehsr7Z0KGQPQ1G1H5BhE3byxE54PHagtC3QMoL0qqClqQJOJ5FY1HBjIpXngQMMRhYukRw3o+PX98LpKBi90mYbAkVZ05yPqbm8iIQZjCQ6STw2o64dCtzVCsTC2c9fBg42unC6yw2bjXj4dAXvPqRzMAJdPNu/2GDT9c9b9czhIgbDddjttuHRsxW8ff8ftDZjeuPGaMxR0FIO2NjgQl9vTTZd7Gi9Zm5q1OfPws7FFloV4atysMsX6lDvtVs6MmsKhjY7uNHEFIHgVs8tzpeskykwF71uvzpDoH27wLKLbgLML2jptxql4CqAik2gq0Jc21PpHbX8gvIL+64kPYaW6RZR2gRymMAuAb4T/EgaLxS748HkkCdZfNk/0ZDniYBF4agAAAAASUVORK5CYII=" class="d-inline-block">
+                </a>
+            </p>
+            <div style="clear:left;float: left;font-size: 15px;margin-left: 20px;">
+                <p>直播课:<span th:if="${order.lastAllTianYiMonthRecording_live !=null}">[[${order.lastAllTianYiMonthRecording_live}]] 元</span>
+                    <span th:if="${order.lastAllTianYiMonthRecording_live == null}">0 元</span></p>
+                <p>录播课:<span th:if="${order.lastAllTianYiMonthRecording_recording !=null}">[[${order.lastAllTianYiMonthRecording_recording}]] 元</span>
+                    <span th:if="${order.lastAllTianYiMonthRecording_recording == null}">0 元</span></p>
+            </div>
+            <p style="float: right;margin-top: -69px;margin-right: 1px;">
+                <img src="/img/tian.png">
+            </p>
+        </li>
+    </ul>
+</div>
+<th:block th:include="include :: footer" />
+<script th:inline="javascript">
+
+</script>
+</body>
+</html>

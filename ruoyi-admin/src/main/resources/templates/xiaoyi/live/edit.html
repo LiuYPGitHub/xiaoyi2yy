@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" >
+<head>
+    <th:block th:include="include :: header('修改直播课程状态')" />
+</head>
+<body class="white-bg">
+<div class="wrapper wrapper-content animated fadeInRight ibox-content">
+    <form class="form-horizontal m" id="form-dict-edit" th:object="${liveCourse}">
+        <input name="codeId"  type="hidden"  th:field="${liveCourse.id}" />
+
+        <div class="form-group">
+            <label class="col-sm-3 control-label ">课程名称：</label>
+            <div class="col-sm-8">
+                <input class="form-control" disabled type="text" name="codeType" id="codeType" th:field="${liveCourse.courseName}" required>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="col-sm-3 control-label">课程状态：</label>
+            <div class="col-sm-8">
+                <div class="radio-box" th:each="Lz_dict : ${@Lz_dict.getType('courseStatusType')}">
+                    <span th:if="${liveCourse.status} == ${Lz_dict.codeNo}">
+                        <input type="radio" checked="checked" th:id="${Lz_dict.codeId}" name="status" th:value="${Lz_dict.codeNo}" >
+                    </span>
+                    <span th:if="${liveCourse.status} != ${Lz_dict.codeNo}">
+                        <input type="radio" th:id="${Lz_dict.codeId}" name="status" th:value="${Lz_dict.codeNo}" >
+                    </span>
+                    <label th:for="${Lz_dict.codeId}" th:text="${Lz_dict.codeName}"></label>
+                </div>
+            </div>
+        </div>
+
+    </form>
+</div>
+<th:block th:include="include :: footer" />
+<script type="text/javascript">
+    var prefix = ctx + "xiaoyi/live";
+
+    $("#form-dict-edit").validate({
+        rules:{
+            dictSort:{
+                digits:true
+            },
+        },
+        focusCleanup: true
+    });
+
+    function submitHandler() {
+        if ($.validate.form()) {
+            $.operate.save(prefix + "/edit", $('#form-dict-edit').serialize());
+        }
+    }
+</script>
+</body>
+</html>

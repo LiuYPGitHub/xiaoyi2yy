@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <th:block th:include="include :: header('录播课详情')"/>
+    <th:block th:include="include :: jsonview-css"/>
+</head>
+<body class="white-bg">
+<div class="wrapper wrapper-content animated fadeInRight ibox-content">
+    <form class="form-horizontal m-t" id="signupForm">
+        <div data-v-177bc009="" class="z_zb_cent_box col-sm-12 col-lg-12 row mb-4 clearPaddingMargin z_edit_box">
+            <div data-v-177bc009="" class="z_zb_cent_boxc col-sm-12 col-lg-10">
+                <div data-v-177bc009="" class="z_zb_cent_box col-sm-12 col-lg-12 row clearPaddingMargin z_edit_tit">
+                    <div data-v-177bc009="" class="z_zb_cent_boxc col-sm-12 col-lg-12 md-4">
+                        <span>
+                            <table id="teachers-highlight" border="0" cellspacing="0" style="width:100%;border-style: hidden" width="493">
+   <tbody>
+    <tr class="firstRow">
+     <td style="padding: 0px; word-break: break-all;" width="235"><p style="margin:0px 0 10px 18px;height: 35px;width: 8px;background-color: #56b430;float:left"><br /> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;</p><p style="font-size: 15px;color: #4c4c4c;margin:0px 0 10px 15px;height: 35px;line-height:35px;float:left;">课程详情</p></td>
+    </tr>
+   </tbody>
+  </table>
+  <table border="0" cellspacing="0" align="center" frame="void" style="font-size: 15px;border-collapse: separate;padding: 0 18px;border:  none;border-style: hidden;width: 100%;margin-bottom: 20px;" width="493">
+   <tbody rules="none">
+    <tr rules="none" style="background-color: rgb(238,247,234);" class="firstRow">
+     <td valign="top" style="text-align: center; border-style: hidden; padding: 30px; white-space: nowrap; vertical-align: middle; color: rgb(255, 255, 255); word-break: break-all;"><p style="background-color:rgb(252,206,47);border-radius: 100px;width:  144px;height: 148px;">
+         <img style="width:144px;height:144px;border-radius:100px;" th:src="${recordCourse.coverImg}" title="1568684038013085371.png" alt="1.png" /> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;</p></td>
+     <td valign="top" style="word-break: break-all;border-style: hidden;padding: 30px 30px 30px 0;"><p style="background-color:rgb(86,180,48);height: 42px;font-size:15px;border-radius:30px;color: #fff;text-align:  center;line-height: 42px;" th:text="${recordCourse.courseName}"></p>
+         <p style="padding-top: 16px;color: red">课程售价:[[${recordCourse.price}]]</p>
+         <p style="padding-top: 16px;">课程类型:[[${recordCourse.classType}]]</p>
+         <p style="padding-top: 16px;">课程标签:[[${recordCourse.classTag}]]</p>
+         <p style="padding-top: 16px;">课时数:[[${recordCourse.courseNum}]]</p>
+     </td>
+    </tr>
+   </tbody>
+  </table>
+                        </span>
+                    </div>
+                    <div data-v-177bc009="" class="z_zb_cent_boxc col-sm-12 col-lg-12" th:utext="${recordCourse.teacherInfo}">
+                    </div>
+                    <div data-v-177bc009="" class="z_zb_cent_boxc col-sm-12 col-lg-12">
+
+                        <p data-v-177bc009="" class="col-sm-12 col-xl-6" th:utext="${recordCourse.desc}"> </p>
+                        <p></p>
+                    </div>
+                    <div data-v-177bc009="" class="z_zb_cent_boxc col-sm-12 col-lg-12">
+
+                        <p data-v-177bc009="" class="col-sm-12 col-xl-6" th:utext="${recordCourse.courseContent}"></p>
+                    </div>
+                    <div data-v-177bc009="" class="z_zb_cent_boxc col-sm-12 col-lg-12">
+                        <div data-v-177bc009="" class="z_edut_num z_flex col-sm-12 col-lg-12 row clearPaddingMargin">
+                            <p data-v-177bc009="" class="col-sm-12 col-xl-6">
+                                <span th:utext="${recordCourse.courseFeature}"></span>
+                            </p>
+                        </div>
+                    </div>
+                    <div data-v-177bc009="" class="z_zb_cent_boxc col-sm-12 col-lg-12" th:if="${recordCourseDetail.size() >0 }">
+                        <table border="0" cellspacing="0" style="margin-top:20px;width:100%;border-style: hidden" width="493"><tbody><tr class="firstRow"><td style="padding: 0px; word-break: break-all;" width="112"><p style="margin:0px 0 10px 18px;height: 35px;width: 8px;background-color: #56b430;float:left"><br>
+                            &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;</p>
+                            <p style="font-size: 15px;color: #4c4c4c;margin:0px 0 10px 15px;height: 35px;line-height:35px;float:left;">课节内容</p>
+                            <p style="font-size: 15px;color: #4c4c4c;margin:0px 0 10px 15px;height: 35px;line-height:35px;float:left;"><br>
+                            &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;</p>
+                            <p style="font-size: 15px;color: #4c4c4c;margin:0px 0 10px 15px;height: 35px;line-height:35px;float:left;"><br>
+                            &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;</p>
+                        </td></tr></tbody></table>
+                        <table data-v-177bc009="" style="margin-left: 20px;font-size:15px " class="z_table">
+                            <tbody>
+                            <tr data-v-177bc009="">
+                                <th data-v-177bc009="" style="width: 180px;">课节</th>
+                                <th data-v-177bc009="" style="width: 180px;">课程名称</th>
+                                <th data-v-177bc009="" style="width: 180px;">课节创建时间</th>
+                                <th data-v-177bc009="" style="width: 180px;">最后更新时间</th>
+                                <th data-v-177bc009="" style="width: 180px;">操作</th>
+                            </tr>
+                            <tr data-v-177bc009="" th:each="detail,detailStatus:${recordCourseDetail}">
+                                <td data-v-177bc009="" style="width: 180px;">[[${detailStatus.count}]]</td>
+                                <td data-v-177bc009="" style="width: 180px;">[[${detail.lessonName}]]</td>
+                                <td data-v-177bc009="" style="width: 180px;">[[${#dates.format(detail.createdAt, 'yyyy-MM-dd HH:mm:ss')}]]</td>
+                                <td data-v-177bc009="" style="width: 180px;">[[${#dates.format(detail.updatedAt, 'yyyy-MM-dd HH:mm:ss')}]]</td>
+                                <td data-v-177bc009="" style="width: 180px;">
+                                    <!--<a target="_blank" th:href="${detail.mp4}">播放</a>-->
+                                    <span th:if="${detail.vid !=null and detail.vid != ''}">
+                                        <a target="_blank" th:href="@{'/xiaoyi/record/player/'+${detail.vid}}">播放</a>
+                                    </span>
+                                    <span th:if="${detail.vid == null || detail.vid == ''}">
+                                        <a style="color: #8d8d8d" href="javascript:void(0);alert('视频正在制作中！');">播放</a>
+                                    </span>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+<th:block th:include="include :: footer"/>
+<th:block th:include="include :: jsonview-js"/>
+<script th:inline="javascript">
+</script>
+</body>
+</html>

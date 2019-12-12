@@ -1,0 +1,357 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.web.controller.xiaoyi.dao.LiveOrderMapper">
+
+    <resultMap id="orderMap" type="com.ruoyi.web.controller.xiaoyi.domain.XiaoYiOrder">
+        <id property="id" column="id"></id>
+        <result property="courseName" column="course_name"></result>
+        <result property="orderChannel" column="order_channel"></result>
+        <result property="payType" column="pay_type"></result>
+        <result property="refundName" column="refund_name"></result>
+        <result property="refundDate" column="refund_date"></result>
+        <result property="createDate" column="create_date"></result>
+        <result property="orgCode" column="org_code"></result>
+        <result property="siteName" column="site_name"></result>
+        <result property="channelName" column="channel_name"></result>
+        <result property="channel" column="channel"></result>
+        <result property="userName" column="user_name"></result>
+        <result property="userMobile" column="user_mobile"></result>
+        <result property="orderName" column="order_name"></result>
+        <result property="classType" column="class_type"></result>
+        <result property="orderNum" column="order_num"></result>
+        <result property="orderType" column="order_type"></result>
+        <result property="payStatus" column="pay_status"></result>
+        <result property="cost" column="cost"></result>
+        <result property="primeCost" column="prime_cost"></result>
+        <result property="orderFinishDate" column="order_finish_date"></result>
+        <result property="orderExpireDate" column="order_expire_date"></result>
+    </resultMap>
+
+<!--    <select id="thisMonthMoneyLive" resultType="java.math.BigDecimal">-->
+<!--        SELECT SUM(prime_cost)-->
+<!--        FROM ty_orders-->
+<!--        where DATE_FORMAT(create_date,'%Y-%m')=DATE_FORMAT(NOW(),'%Y-%m') and live_recording = 1-->
+<!--    </select>-->
+
+    <!-- 全平台 直播 -->
+    <select id="liveBroadcastAllMonth" resultType="java.math.BigDecimal">
+        SELECT SUM(prime_cost)
+        FROM ty_orders
+        <trim prefix="where">
+            <if test="month == 'this'">
+                DATE_FORMAT(order_finish_date,'%Y-%m')=DATE_FORMAT(NOW(),'%Y-%m')  AND refund_name = '已付款'
+            </if>
+            <if test="month == 'last'">
+                DATE_FORMAT(order_finish_date,'%Y-%m')=DATE_FORMAT(DATE_SUB(CURDATE(), INTERVAL 1 MONTH),'%Y-%m')  AND refund_name = '已付款'
+            </if>
+        </trim>
+    </select>
+
+    <!-- 全平台 录播 -->
+    <select id="fullMonthRecording" resultType="java.math.BigDecimal">
+        SELECT SUM(prime_cost)
+        FROM ty_orders
+        <trim prefix="where">
+            <if test="month == 'this'">
+                DATE_FORMAT(order_finish_date,'%Y-%m')=DATE_FORMAT(NOW(),'%Y-%m') and class_type = '录播课' AND refund_name = '已付款'
+            </if>
+            <if test="month == 'last'">
+                DATE_FORMAT(order_finish_date,'%Y-%m')=DATE_FORMAT(DATE_SUB(CURDATE(), INTERVAL 1 MONTH),'%Y-%m') and class_type = '录播课' AND refund_name = '已付款'
+            </if>
+        </trim>
+    </select>
+
+<!--  机构 直播  -->
+    <select id="jiThisAllMonthRecording" resultType="java.math.BigDecimal">
+        SELECT SUM(prime_cost)
+        FROM ty_orders
+        <trim prefix="where">
+            <if test="month == 'this'">
+                DATE_FORMAT(order_finish_date,'%Y-%m')=DATE_FORMAT(NOW(),'%Y-%m')  AND refund_name = '已付款' and channel_name != '添翼申学'
+            </if>
+            <if test="month == 'last'">
+                DATE_FORMAT(order_finish_date,'%Y-%m')=DATE_FORMAT(DATE_SUB(CURDATE(), INTERVAL 1 MONTH),'%Y-%m')  AND refund_name = '已付款' and channel_name != '添翼申学'
+            </if>
+        </trim>
+    </select>
+
+    <!-- 机构 录播 -->
+    <select id="jiLateAllMonthRecording" resultType="java.math.BigDecimal">
+        SELECT SUM(prime_cost)
+        FROM ty_orders
+        <trim prefix="where">
+            <if test="month == 'this'">
+                DATE_FORMAT(order_finish_date,'%Y-%m')=DATE_FORMAT(NOW(),'%Y-%m') and class_type = '录播课' AND refund_name = '已付款' and channel_name != '添翼申学'
+            </if>
+            <if test="month == 'last'">
+                DATE_FORMAT(order_finish_date,'%Y-%m')=DATE_FORMAT(DATE_SUB(CURDATE(), INTERVAL 1 MONTH),'%Y-%m') and class_type = '录播课' AND refund_name = '已付款' and channel_name != '添翼申学'
+            </if>
+        </trim>
+    </select>
+
+    <!--  添翼 直播  -->
+    <select id="tianThisAllMonthRecording" resultType="java.math.BigDecimal">
+        SELECT SUM(prime_cost)
+        FROM ty_orders
+        <trim prefix="where">
+            <if test="month == 'this'">
+                DATE_FORMAT(order_finish_date,'%Y-%m')=DATE_FORMAT(NOW(),'%Y-%m')  AND refund_name = '已付款' and channel_name = '添翼申学'
+            </if>
+            <if test="month == 'last'">
+                DATE_FORMAT(order_finish_date,'%Y-%m')=DATE_FORMAT(DATE_SUB(CURDATE(), INTERVAL 1 MONTH),'%Y-%m')  AND refund_name = '已付款' and channel_name = '添翼申学'
+            </if>
+        </trim>
+    </select>
+
+    <!--  添翼 录播  -->
+    <select id="tianLateAllMonthRecording" resultType="java.math.BigDecimal">
+        SELECT SUM(prime_cost)
+        FROM ty_orders
+        <trim prefix="where">
+            <if test="month == 'this'">
+                DATE_FORMAT(order_finish_date,'%Y-%m')=DATE_FORMAT(NOW(),'%Y-%m') and class_type = '录播课' AND refund_name = '已付款' and channel_name = '添翼申学'
+            </if>
+            <if test="month == 'last'">
+                DATE_FORMAT(order_finish_date,'%Y-%m')=DATE_FORMAT(DATE_SUB(CURDATE(), INTERVAL 1 MONTH),'%Y-%m') and class_type = '录播课' AND refund_name = '已付款' and channel_name = '添翼申学'
+            </if>
+        </trim>
+    </select>
+
+<!--    <select id="selectOrderByName" parameterType="com.ruoyi.web.controller.xiaoyi.bean.OrderWhereBean"-->
+<!--            resultType="java.math.BigDecimal">-->
+<!--        SELECT SUM(prime_cost) FROM `ty_orders`-->
+<!--        <trim prefix="where" prefixOverrides="and | or">-->
+<!--            <if test="month == 'this'">-->
+<!--                AND DATE_FORMAT(create_date,'%Y-%m')=DATE_FORMAT(NOW(),'%Y-%m')-->
+<!--            </if>-->
+<!--            <if test="month == 'last'">-->
+<!--                AND DATE_FORMAT(create_date,'%Y-%m')=DATE_FORMAT(DATE_SUB(CURDATE(), INTERVAL 1 MONTH),'%Y-%m')-->
+<!--            </if>-->
+<!--            <if test="flag == 'is'">-->
+<!--                AND channel_name = '添翼申学'-->
+<!--            </if>-->
+<!--            <if test="flag == 'no'">-->
+<!--                AND channel_name != '添翼申学'-->
+<!--            </if>-->
+<!--            AND refund_date IS null-->
+<!--        </trim>-->
+<!--    </select>-->
+
+    <select id="selectOrders" resultType="java.lang.Integer">
+        SELECT SUM(DISTINCT prime_cost) FROM ty_orders orders
+        GROUP BY order_num
+    </select>
+
+    <select id="selectByOrder" parameterType="String" resultMap="orderMap">
+         SELECT * FROM `ty_orders`
+         WHERE order_num = #{orderNum}
+    </select>
+
+    <insert id="insertOrder" parameterType="com.ruoyi.web.controller.xiaoyi.domain.XiaoYiOrder">
+        insert into ty_orders
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="courseName != null and courseName != ''">
+                course_name,
+            </if>
+            <if test="orderChannel != null and orderChannel != ''">
+                order_channel,
+            </if>
+            <if test="payType != null and payType != ''">
+                pay_type,
+            </if>
+            <if test="refundName != null and refundName != ''">
+                refund_name,
+            </if>
+            <if test="refundDate != null and refundDate != ''" >
+                refund_date,
+            </if>
+
+            <if test="createDate != null">
+                create_date,
+            </if>
+            <if test="orgCode != null and orgCode !='' ">
+                org_code,
+            </if>
+            <if test="siteName != null and siteName !='' ">
+                site_name,
+            </if>
+            <if test="channelName != null and channelName !='' ">
+                channel_name,
+            </if>
+            <if test="channel != null and channel !='' ">
+                channel,
+            </if>
+            <if test="userName != null and userName !='' ">
+                user_name,
+            </if>
+            <if test="userMobile != null and userMobile !='' ">
+                user_mobile,
+            </if>
+            <if test="orderName != null and orderName !='' ">
+                order_name,
+            </if>
+            <if test="classType != null and classType !='' ">
+                class_type,
+            </if>
+            <if test="orderNum != null and orderNum !='' ">
+                order_num,
+            </if>
+            <if test="orderType != null and orderType !='' ">
+                order_type,
+            </if>
+            <if test="payStatus != null and payStatus !='' ">
+                pay_status,
+            </if>
+            <if test="cost != 0 ">
+                cost,
+            </if>
+            <if test="primeCost != 0 ">
+                prime_cost,
+            </if>
+            <if test="orderFinishDate != null">
+                order_finish_date,
+            </if>
+            <if test="orderExpireDate != null">
+                order_expire_date,
+            </if>
+        </trim>
+        <trim prefix="values(" suffix=")" suffixOverrides=",">
+            <if test="courseName != null and courseName!='' ">
+                #{courseName},
+            </if>
+            <if test="orderChannel != null and orderChannel!='' ">
+                #{order_channel},
+            </if>
+            <if test="payType != null and payType!='' ">
+                #{payType},
+            </if>
+            <if test="refundName != null and refundName!='' ">
+                #{refundName},
+            </if>
+            <if test="refundDate != null and refundDate!='' ">
+                #{refundDate},
+            </if>
+            <if test="createDate != null">
+                #{createDate},
+            </if>
+            <if test="orgCode != null and orgCode !='' ">
+                #{orgCode},
+            </if>
+            <if test="siteName != null and siteName !='' ">
+                #{siteName},
+            </if>
+            <if test="channelName != null and channelName !='' ">
+                #{channelName},
+            </if>
+            <if test="channel != null and channel !='' ">
+                #{channel},
+            </if>
+            <if test="userName != null and userName !='' ">
+                #{userName},
+            </if>
+            <if test="userMobile != null and userMobile !='' ">
+                #{userMobile},
+            </if>
+            <if test="orderName != null and orderName !='' ">
+                #{orderName},
+            </if>
+            <if test="classType != null and classType !='' ">
+                #{classType},
+            </if>
+            <if test="orderNum != null and orderNum !='' ">
+                #{orderNum},
+            </if>
+            <if test="orderType != null and orderType !='' ">
+                #{orderType},
+            </if>
+            <if test="payStatus != null and payStatus !='' ">
+                #{payStatus},
+            </if>
+            <if test="cost != 0 ">
+                #{cost},
+            </if>
+            <if test="primeCost != 0 ">
+                #{primeCost},
+            </if>
+            <if test="orderFinishDate != null">
+                #{orderFinishDate},
+            </if>
+            <if test="orderExpireDate != null">
+                #{orderExpireDate},
+            </if>
+        </trim>
+    </insert>
+
+    <update id="updateOrder" parameterType="com.ruoyi.web.controller.xiaoyi.domain.XiaoYiOrder">
+        update ty_orders
+        <trim prefix="set" suffixOverrides=",">
+            <if test="courseName != null  and courseName!='' ">
+                course_name=#{courseName},
+            </if>
+            <if test="orderChannel != null  and orderChannel!='' ">
+                order_channel=#{orderChannel},
+            </if>
+            <if test="payType != null and payType!='' ">
+                pay_type=#{payType},
+            </if>
+            <if test="refundName != null and refundName!='' ">
+                refund_name=#{refundName},
+            </if>
+            <if test="refundDate != null and refundDate!='' ">
+                refund_date=#{refundDate},
+            </if>
+            <if test="createDate != null">
+                create_date = #{createDate},
+            </if>
+            <if test="orgCode != null and orgCode !='' ">
+                org_code = #{orgCode},
+            </if>
+            <if test="siteName != null and siteName !='' ">
+                site_name = #{siteName},
+            </if>
+            <if test="channelName != null and channelName !='' ">
+                channel_name = #{channelName},
+            </if>
+            <if test="channel != null and channel !='' ">
+                channel = #{channel},
+            </if>
+            <if test="userName != null and userName !='' ">
+                user_name = #{userName},
+            </if>
+            <if test="userMobile != null and userMobile !='' ">
+                user_mobile = #{userMobile},
+            </if>
+            <if test="orderName != null and orderName !='' ">
+                order_name = #{orderName},
+            </if>
+            <if test="classType != null and classType !='' ">
+                class_type = #{classType},
+            </if>
+            <if test="orderNum != null and orderNum !='' ">
+                order_num = #{orderNum},
+            </if>
+            <if test="orderType != null and orderType !='' ">
+                order_type = #{orderType},
+            </if>
+            <if test="payStatus != null and payStatus !='' ">
+                pay_status = #{payStatus},
+            </if>
+            <if test="cost != 0 ">
+                cost = #{cost},
+            </if>
+            <if test="primeCost != 0 ">
+                prime_cost = #{primeCost},
+            </if>
+            <if test="orderFinishDate != null">
+                order_finish_date = #{orderFinishDate},
+            </if>
+            <if test="orderExpireDate != null">
+                order_expire_date = #{orderExpireDate},
+            </if>
+        </trim>
+        where id = #{id}
+    </update>
+
+</mapper>

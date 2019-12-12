@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<head>
+    <th:block th:include="include :: header('操作日志列表')"/>
+    <th:block th:include="include :: bootstrap-select-css"/>
+</head>
+<body class="gray-bg">
+<div class="container-div">
+    <div class="row">
+        <div class="col-sm-12 search-collapse">
+            <form id="kol-form">
+                <div class="select-list">
+                    <ul>
+                        <li>
+                            机构名称/真实姓名：<input type="text" name="orgName"/>
+                        </li>
+                        <li>
+                            合作对象：<select name="type">
+                            <option value="">所有</option>
+                            <option value="1">KOL</option>
+                            <option value="2">名师</option>
+                            <option value="3">机构</option>
+                            <option value="4">其他</option>
+                        </select>
+                        </li>
+                        <li>
+                            <a class="btn btn-primary btn-rounded btn-sm" onclick="$.table.search()"><i
+                                    class="fa fa-search"></i>&nbsp;搜索</a>
+                            <a class="btn btn-warning btn-rounded btn-sm" onclick="$.form.reset()"><i
+                                    class="fa fa-refresh"></i>&nbsp;重置</a>
+                        </li>
+                    </ul>
+                </div>
+            </form>
+        </div>
+        <div class="btn-group-sm" id="toolbar" role="group">
+            <a class="btn btn-warning" onclick="$.table.exportExcel()">
+                <i class="fa fa-download"></i> 导出
+            </a>
+        </div>
+        <div class="col-sm-12 select-table table-striped">
+            <table id="bootstrap-table" data-mobile-responsive="true"></table>
+        </div>
+    </div>
+</div>
+
+<th:block th:include="include :: footer"/>
+<th:block th:include="include :: bootstrap-select-js"/>
+<script th:inline="javascript">
+
+    var prefix = ctx + "need/cooperation";
+    $(function () {
+        var options = {
+            url: prefix + "/list",
+            exportUrl: prefix + "/export",
+            detailUrl: prefix + "/detail/{id}",
+            modalName: "需求列表",
+            showPageGo: true,
+            rememberSelected: true,
+            columns: [
+                {
+                    field: 'orgName',
+                    title: '机构名称/真实姓名'
+                },
+                {
+                    field: 'contacts',
+                    title: '联系人'
+                },
+                {
+                    field: 'orgTel',
+                    title: '联系电话'
+                },
+                {
+                    field: 'typeName',
+                    title: '需求合作对象'
+                },
+                {
+                    field: 'cooperationObjName',
+                    title: '合作对象真实姓名'
+                },
+                {
+                    field: 'cooperationObjNickName',
+                    title: '合作对象昵称'
+                },
+                {
+                    field: 'info',
+                    title: '需求',
+                    formatter: function(value, row, index) {
+                        return $.table.tooltip(value);
+                    }
+                },
+                {
+                    field: 'createTime',
+                    title: '创建时间'
+                },
+                {
+                    title: '操作',
+                    align: 'center',
+                    formatter: function (value, row, index) {
+                        var actions = [];
+                        actions.push('<a class="btn btn-warning btn-xs " href="javascript:void(0)" onclick="$.operate.detail(\'' + row.cooperationId + '\')"><i class="fa fa-search"></i>查看</a>');
+                        return actions.join('');
+                    }
+                }]
+        };
+        $.table.init(options);
+
+    });
+
+
+</script>
+
+
+</body>
+</html>
